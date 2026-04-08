@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace StarterGame
 {
@@ -19,16 +20,36 @@ namespace StarterGame
         public string Tag { get { return _tag; } set { _tag = value; } }
         public string Conjunction { get { return _conjunction; } set { _conjunction = value; } }
 
-        public Room() : this("empty", "in"){}
-        public Room(string tag) : this(tag, "in"){}
+        public string type { get; private set; } 
+
+
+
+        private Dictionary<string, Activity> activities; // command list of activities to do - do this 
+
+
+
+        public Room() : this("empty", "in","normal"){}
+        public Room(string tag) : this(tag, "in","normal"){}
 
         // Designated Constructor
-        public Room(string tag, string conjunction)
+        public Room(string tag, string conjunction , string type)
         {
             _exits          = new Dictionary<string, Room>();
             Tag             = tag;
             Conjunction     = conjunction;
+            this.type       = type;
         }
+
+        // set activities to do in rooms with this
+        public bool SetActivities(string name, Activity activity)
+        {
+            if (activities.TryAdd(name, activity))
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public void SetExit(string exitName, Room room)
         {
@@ -56,7 +77,7 @@ namespace StarterGame
 
         public string Description()
         {
-            return "You are " + Conjunction + " " + Tag + ".\n *** " + this.GetExits();
+            return "You are " + Conjunction + " " + Tag + " :: "+ type + ".\n *** " + this.GetExits();
         }
     }
 }
