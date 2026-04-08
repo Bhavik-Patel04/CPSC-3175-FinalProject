@@ -13,13 +13,20 @@ namespace StarterGame
         private Parser _parser;
         private bool _playing;
         private MapGenerator mapGenerator;
-
+        private MapRenderer mapRenderer;
         public Game()
         {
             _playing        = false;
             mapGenerator    = new MapGenerator();
             _parser         = new Parser(new CommandWords());
-            _player         = new Player(mapGenerator.Generate());
+            mapRenderer = new MapRenderer();
+            MapGenerator gen = new MapGenerator();
+            Room start = gen.Generate(100);
+
+            MapDebugger.PrintAll(start);
+            mapRenderer.Draw(start);
+
+            _player         = new Player(start);
         }
 
         // This creates a very simple world based 

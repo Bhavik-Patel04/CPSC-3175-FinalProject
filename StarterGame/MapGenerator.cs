@@ -1,61 +1,96 @@
 ﻿using StarterGame;
 using System;
-using System.CodeDom.Compiler;
+using System.Collections.Generic;
 
 public class MapGenerator
 {
+    private Dictionary<string, Room> rooms_cache;
+    private Random rand = new Random();
+    private string[] directions = { "north", "south", "east", "west" };
 
-    private overworld = new Dictionary<string, Room>();
-	public MapGenerator()
-	{
-	}
+    public Room Generate(int roomCount = 10)
+    {
+        rooms_cache = new Dictionary<string, Room>();
 
+        // 1. Create rooms
+        for (int i = 0; i < roomCount; i++)
+        {
+            string key = "room" + i;
+            rooms_cache[key] = new Room($"Room #{i}", "in");
+        }
 
-	public Room Generate()
-	{
+        // 2. Ensure connectivity (chain them first)
+        for (int i = 0; i < roomCount - 1; i++)
+        {
+            Room a = rooms_cache["room" + i];
+            Room b = rooms_cache["room" + (i + 1)];
 
-        Room outside            = new Room("the main entrance of the university", "outside");
-        Room scctparking        = new Room("the parking lot at SCCT");
-        Room boulevard          = new Room("the boulevard", "on");
-        Room universityParking  = new Room("the parking lot at University Hall");
-        Room parkingDeck        = new Room("the parking deck");
-        Room scct               = new Room("the SCCT building");
-        Room theGreen           = new Room("the green in from of Schuster Center");
-        Room universityHall     = new Room("University Hall");
-        Room schuster           = new Room("the Schuster Center");
+            string dir = GetRandomDirection();
+            string opposite = GetOpposite(dir);
 
-        outside.SetExit("west", boulevard);
+            a.SetExit(dir, b);
+            b.SetExit(opposite, a);
+        }
 
-        boulevard.SetExit("east", outside);
-        boulevard.SetExit("south", scctparking);
-        boulevard.SetExit("west", theGreen);
-        boulevard.SetExit("north", universityParking);
+        // 3. Add random extra connections
+        int extraConnections = roomCount; // tweak density here
 
-        scctparking.SetExit("west", scct);
-        scctparking.SetExit("north", boulevard);
+        for (int i = 0; i < extraConnections; i++)
+        {
+            Room a = GetRandomRoom();
+            Room b = GetRandomRoom();
 
-        scct.SetExit("east", scctparking);
-        scct.SetExit("north", schuster);
+            if (a == b) continue;
 
-        schuster.SetExit("south", scct);
-        schuster.SetExit("north", universityHall);
-        schuster.SetExit("east", theGreen);
+            string dir = GetRandomDirection();
+            string opposite = GetOpposite(dir);
 
-        theGreen.SetExit("west", schuster);
-        theGreen.SetExit("east", boulevard);
+            a.SetExit(dir, b);
+            b.SetExit(opposite, a);
+        }
 
-        universityHall.SetExit("south", schuster);
-        universityHall.SetExit("east", universityParking);
-
-        universityParking.SetExit("south", boulevard);
-        universityParking.SetExit("west", universityHall);
-        universityParking.SetExit("north", parkingDeck);
-
-        parkingDeck.SetExit("south", universityParking);
-        return outside;
+        // 4. Return starting room
+        return rooms_cache["room0"];
     }
 
 
 
+    private Room GetRandomRoom()
+    {
+        int index = rand.Next(rooms_cache.Count);
+        foreach (var room in rooms_cache.Values)
+        {
+            if (index-- == 0)
+                return room;
+        }
+        return null;
+    }
 
+
+
+    private string GetRandomDirection()
+    {
+        return directions[rand.Next(directions.Length)];
+    }
+
+
+
+    private string GetOpposite(string dir)
+    {
+        switch (dir)
+        {
+            case "north": return "south";
+            case "south": return "north";
+            case "east": return "west";
+            case "west": return "east";
+            default: return "north";
+        }
+    }
+
+
+
+    public Room GetRoom(string key)
+    {
+        return rooms_cache.ContainsKey(key) ? rooms_cache[key] : null;
+    }
 }

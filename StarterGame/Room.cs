@@ -25,9 +25,9 @@ namespace StarterGame
         // Designated Constructor
         public Room(string tag, string conjunction)
         {
-            _exits = new Dictionary<string, Room>();
-            Tag = tag;
-            Conjunction = conjunction;
+            _exits          = new Dictionary<string, Room>();
+            Tag             = tag;
+            Conjunction     = conjunction;
         }
 
         public void SetExit(string exitName, Room room)
