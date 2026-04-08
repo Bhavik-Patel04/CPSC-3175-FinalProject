@@ -19,7 +19,11 @@ public class MapGenerator
             string key  = "room" + i;
             string type = TypeDiceRoll(); // roll for a type 
 
-            rooms_cache[key] = new Room($"Room #{i}", "in", type);  // add random type rarity 
+            rooms_cache[key] = new Room(
+                                        $"Room #{i}",
+                                        "in",
+                                        type // rolled by dice roll 
+                                        ); 
 
         }
 
@@ -61,15 +65,21 @@ public class MapGenerator
 
     private string TypeDiceRoll()
     {
-        double roll = 0;
         Random dice = new Random();
-        for (int i_ = 0; i_ < 5; i_++)
+        double roll = 0;
+        int count   = 0
+        
+        // roll a few times and get average 
+        for (int count = 0; count < 5; count++)
         {
-            roll = dice.NextDouble() / 2;
+            roll  += dice.NextDouble(); 
         }
+        roll = roll/count               // average roll 
+
+
+
 
         string type = "mine";           // defualt 
-
         if (roll >= .4 && roll < .5)    // 10% roll
         {
             type = "town";
