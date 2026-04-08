@@ -65,8 +65,7 @@ public class MapGenerator
         return rooms_cache["room0"]; 
     }
 
-
-
+  
     private string TypeDiceRoll()
     {
         Random dice = new Random();

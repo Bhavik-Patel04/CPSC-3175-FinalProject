@@ -20,12 +20,10 @@ namespace StarterGame
         public string Tag { get { return _tag; } set { _tag = value; } }
         public string Conjunction { get { return _conjunction; } set { _conjunction = value; } }
 
-        public string type { get; private set; } 
+        public string type { get; private set; }
 
 
-
-        private Dictionary<string, Activity> activities; // command list of activities to do - do this 
-
+        private Dictionary<string, IActivity> Activities;
 
 
         public Room() : this("empty", "in","normal"){}
@@ -40,16 +38,17 @@ namespace StarterGame
             this.type       = type;
         }
 
-        // set activities to do in rooms with this
-        public bool SetActivities(string name, Activity activity)
+
+        public bool BindActivity(string name, IActivity activity)
         {
-            if (activities.TryAdd(name, activity))
+            if (Activities.TryAdd(name, activity))
             {
                 return true;
             }
             return false;
         }
 
+ 
 
         public void SetExit(string exitName, Room room)
         {
