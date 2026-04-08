@@ -24,6 +24,14 @@ namespace StarterGame
         // on the landscape of Columbus State University
         public Room CreateWorld()
         {
+
+            
+
+            // outside west to bulivard
+            //
+
+
+
             Room outside = new Room("the main entrance of the university", "outside");
             Room scctparking = new Room("the parking lot at SCCT");
             Room boulevard = new Room("the boulevard", "on");
@@ -35,7 +43,7 @@ namespace StarterGame
             Room schuster = new Room("the Schuster Center");
 
             outside.SetExit("west", boulevard);
-
+                 // link
             boulevard.SetExit("east", outside);
             boulevard.SetExit("south", scctparking);
             boulevard.SetExit("west", theGreen);
