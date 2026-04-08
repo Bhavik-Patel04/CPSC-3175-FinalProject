@@ -19,10 +19,14 @@ public class MapGenerator
             string key  = "room" + i;
             string type = TypeDiceRoll(); // roll for a type 
 
+            // bind the activities for each room here 
+
+
             rooms_cache[key] = new Room(
                                         $"Room #{i}",
                                         "in",
                                         type // rolled by dice roll 
+                                             // pass activities here
                                         ); 
 
         }
@@ -73,7 +77,7 @@ public class MapGenerator
         for (int count = 0; count < 5; count++)
         {
             roll  += dice.NextDouble(); 
-        }
+        } 
         roll = roll/count               // average roll 
 
 

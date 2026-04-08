@@ -7,12 +7,12 @@ public static class MapDebugger
     public static void PrintAll(Room start)
     {
         var visited = new HashSet<Room>();
-        var queue = new Queue<Room>();
+        var queue   = new Queue<Room>();
 
         queue.Enqueue(start);
         visited.Add(start);
 
-        Console.WriteLine("=== MAP DEBUG ===");
+        Console.WriteLine(" -------- MAP DEBUG --------");
 
         while (queue.Count > 0)
         {
@@ -26,7 +26,7 @@ public static class MapDebugger
             PrintExit(room, "west", visited, queue);
         }
 
-        Console.WriteLine("\n=== END MAP ===");
+        Console.WriteLine("\n -------- END MAP --------");
     }
 
     private static void PrintExit(Room room, string dir, HashSet<Room> visited, Queue<Room> queue)
