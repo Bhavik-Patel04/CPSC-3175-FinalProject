@@ -23,8 +23,7 @@ namespace StarterGame
         public string type { get; private set; }
 
 
-        private Dictionary<string, IActivity> Activities;
-
+     
 
         public Room() : this("empty", "in","normal"){}
         public Room(string tag) : this(tag, "in","normal"){}
@@ -39,14 +38,7 @@ namespace StarterGame
         }
 
 
-        public bool BindActivity(string name, IActivity activity)
-        {
-            if (Activities.TryAdd(name, activity))
-            {
-                return true;
-            }
-            return false;
-        }
+
 
  
 
