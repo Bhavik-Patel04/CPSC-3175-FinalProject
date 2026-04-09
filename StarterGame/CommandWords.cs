@@ -18,6 +18,8 @@ namespace StarterGame
 
         public CommandWords() : this(_commandArray) {}
 
+
+
         // Designated Constructor
         public CommandWords(Command[] commandList)
         {
@@ -30,12 +32,16 @@ namespace StarterGame
             _commands[help.Name] = help;
         }
 
+
+
         public Command Get(string word)
         {
             Command command = null;
             _commands.TryGetValue(word, out command);
             return command;
         }
+
+
 
         public string Description()
         {

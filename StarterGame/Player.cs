@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Runtime.InteropServices;
+using System.Data;
 
 namespace StarterGame
 {
@@ -17,7 +18,7 @@ namespace StarterGame
         public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
         private Double health = 100.00;
-
+        private bool combat_state = false;
 
 
         public Player(Room room)
