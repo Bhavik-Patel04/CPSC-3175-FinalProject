@@ -17,9 +17,7 @@ namespace StarterGame
         public bool Execute(Player player)
         {
             if (this.HasSecondWord())
-            {
-                Console.WriteLine($"{this.SecondWord} <--------");
-                
+            { 
                 if (player.CurrentRoom != null) // guard
                 {
                     if (player.CurrentRoom.Actions.ContainsKey(this.SecondWord))
