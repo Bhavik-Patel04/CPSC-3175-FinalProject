@@ -15,11 +15,11 @@ namespace StarterGame
         private MapGenerator mapGenerator;
         public Game()
         {
-            _playing        = false;
-            mapGenerator    = new MapGenerator();
-            _parser         = new Parser(new CommandWords());
-            MapGenerator gen = new MapGenerator();
-            Room start = gen.Generate(100);
+            _playing                = false;
+            mapGenerator            = new MapGenerator();
+            _parser                 = new Parser(new CommandWords());
+            MapGenerator gen        = new MapGenerator();
+            Room start              = gen.Generate(100);
 
             MapDebugger.PrintAll(start);
 

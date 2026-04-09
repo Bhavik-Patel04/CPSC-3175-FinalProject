@@ -23,7 +23,7 @@ namespace StarterGame
                     if (player.CurrentRoom.Actions.ContainsKey(this.SecondWord))
                     {
                         // do the thing man 
-                        player.CurrentRoom.Actions[this.SecondWord].Execute();
+                        player.CurrentRoom.Actions[this.SecondWord].Execute(player);
                         return false;
                     }
                     player.WarningMessage("\nYou shall not do that thing that you wish you could do.. here... rn ");
