@@ -23,29 +23,26 @@ namespace StarterGame
         public string type { get; private set; }
 
 
-        private Dictionary<string, IActivity> Activities;
+        public Dictionary<string, Action> Actions { get; private set; }
 
-
-        public Room() : this("empty", "in","normal"){}
-        public Room(string tag) : this(tag, "in","normal"){}
+        public Room() : this("empty", "in","normal", new Dictionary<string, Action>()) {}
+        public Room(string tag) : this(tag, "in","normal", new Dictionary<string, Action>()) {}
 
         // Designated Constructor
-        public Room(string tag, string conjunction , string type)
+        public Room(string tag, string conjunction , string type , Dictionary<string,Action> actions_)
         {
             _exits          = new Dictionary<string, Room>();
             Tag             = tag;
             Conjunction     = conjunction;
             this.type       = type;
+
+            this.Actions    = actions_; // actions 
         }
 
 
-        public bool BindActivity(string name, IActivity activity)
+        public void Set_Actions( string key,  Action action_)
         {
-            if (Activities.TryAdd(name, activity))
-            {
-                return true;
-            }
-            return false;
+            Actions.Add(key, action_);
         }
 
  

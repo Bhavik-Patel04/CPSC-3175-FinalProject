@@ -1,12 +1,15 @@
 ﻿using StarterGame;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Security.AccessControl;
 
 public class MapGenerator
 {
     private Dictionary<string, Room> rooms_cache;
     private Random rand = new Random();
     private string[] directions = { "north", "south", "east", "west" };
+    
 
     public Room Generate(int roomCount = 10)
     { 
@@ -21,12 +24,12 @@ public class MapGenerator
 
             // bind the activities for each room here 
 
-
+            Dictionary<string,Action> actions_ = BindActions(type);
             rooms_cache[key] = new Room(
                                         $"Room #{i}",
                                         "in",
-                                        type // rolled by dice roll 
-                                             // pass activities here
+                                        type,           // rolled by dice roll 
+                                        actions_        // pass activities here
                                         ); 
 
         }
@@ -65,23 +68,35 @@ public class MapGenerator
         return rooms_cache["room0"]; 
     }
 
+
+    private Dictionary<string,Action> BindActions(string type)
+    {
+
+        Dictionary<string, Action>  actions_  = new Dictionary<string, Action>(); 
+        if (type == "mine")
+        {
+            actions_.Add("mining",new MineAction());
+        }
+        return actions_;
+    }
+
   
     private string TypeDiceRoll()
     {
         Random dice = new Random();
         double roll = 0;
-        int count   = 0
+        int count = 0;
         
         // roll a few times and get average 
-        for (int count = 0; count < 5; count++)
+        for (; count < 5; count++)
         {
             roll  += dice.NextDouble(); 
-        } 
-        roll = roll/count               // average roll 
+        }
+        roll = roll / count;              // average roll 
 
 
         string type = "mine";           // defualt 
-        if (roll >= .4 && roll < .5)    // 10% roll
+        if (roll >= .4 && roll < .5)    // 10% roll     // make this set actions to rooms
         {
             type = "town";
         }
@@ -105,6 +120,8 @@ public class MapGenerator
         {
             type = "boss";
         }
+
+
         return type;
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace StarterGame
 {
@@ -13,7 +14,7 @@ namespace StarterGame
     public class CommandWords
     {
         private Dictionary<string, Command> _commands;
-        private static Command[] _commandArray = { new GoCommand(), new QuitCommand() };
+        private static Command[] _commandArray = { new GoCommand(), new QuitCommand() , new ActionCommand() };
 
         public CommandWords() : this(_commandArray) {}
 

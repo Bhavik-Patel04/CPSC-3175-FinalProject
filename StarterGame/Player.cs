@@ -33,7 +33,7 @@ namespace StarterGame
             {
                 health -= points;
             }
-            else
+            else 
             {
                 health = 0;
             }
