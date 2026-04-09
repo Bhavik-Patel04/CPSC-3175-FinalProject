@@ -23,7 +23,7 @@ namespace StarterGame
         public string type { get; private set; }
 
 
-     
+        public Dictionary<string, Action> Actions { get; private set; }
 
         public Room() : this("empty", "in","normal"){}
         public Room(string tag) : this(tag, "in","normal"){}
@@ -35,10 +35,15 @@ namespace StarterGame
             Tag             = tag;
             Conjunction     = conjunction;
             this.type       = type;
+
+            this.Actions = new Dictionary<string, Action>();
         }
 
 
-
+        public void Set_Actions( string key,  Action action_)
+        {
+            Actions.Add(key, action_);
+        }
 
  
 

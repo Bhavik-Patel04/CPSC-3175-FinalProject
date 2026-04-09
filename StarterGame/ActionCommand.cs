@@ -19,7 +19,17 @@ namespace StarterGame
             if (this.HasSecondWord())
             {
                 //player.WaltTo(this.SecondWord);
-                Console.WriteLine(this.SecondWord);
+                Console.WriteLine($"{this.SecondWord} <--------");
+                
+                if (player.CurrentRoom != null) // guard
+                {
+                    if (player.CurrentRoom.Actions.ContainsKey(this.SecondWord))
+                    {
+                        // do the thing man 
+                        return true;
+                    }
+                    player.WarningMessage("\nYou shall not do that thing that you wish you could do.. here... rn ");
+                }
             }
             else
             {

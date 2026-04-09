@@ -8,6 +8,7 @@ public class MapGenerator
     private Random rand = new Random();
     private string[] directions = { "north", "south", "east", "west" };
 
+
     public Room Generate(int roomCount = 10)
     { 
         rooms_cache = new Dictionary<string, Room>();
@@ -70,18 +71,18 @@ public class MapGenerator
     {
         Random dice = new Random();
         double roll = 0;
-        int count   = 0
+        int count = 0;
         
         // roll a few times and get average 
-        for (int count = 0; count < 5; count++)
+        for (; count < 5; count++)
         {
             roll  += dice.NextDouble(); 
-        } 
-        roll = roll/count               // average roll 
+        }
+        roll = roll / count;              // average roll 
 
 
         string type = "mine";           // defualt 
-        if (roll >= .4 && roll < .5)    // 10% roll
+        if (roll >= .4 && roll < .5)    // 10% roll     // make this set actions to rooms
         {
             type = "town";
         }
