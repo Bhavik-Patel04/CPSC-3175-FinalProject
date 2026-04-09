@@ -80,8 +80,6 @@ public class MapGenerator
         roll = roll/count               // average roll 
 
 
-
-
         string type = "mine";           // defualt 
         if (roll >= .4 && roll < .5)    // 10% roll
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Runtime.InteropServices;
 
 namespace StarterGame
 {
@@ -15,10 +16,29 @@ namespace StarterGame
         private Room _currentRoom = null;
         public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
+        private Double health = 100.00;
+
+
+
         public Player(Room room)
         {
             _currentRoom = room;
         }
+
+
+        // combat hit register
+        public void hit(double points)
+        {
+            if (health > points)
+            {
+                health -= points;
+            }
+            else
+            {
+                health = 0;
+            }
+        }
+
 
         public void WaltTo(string direction)
         {
