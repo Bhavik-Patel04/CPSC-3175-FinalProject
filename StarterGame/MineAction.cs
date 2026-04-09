@@ -8,7 +8,7 @@ public class MineAction : Action
 
 
 	public MineAction()
-	{
+	{ 
 	}
 
 	public void Execute()
