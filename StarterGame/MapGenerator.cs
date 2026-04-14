@@ -152,7 +152,7 @@ public class MapGenerator
 
 
 
-    private Room GetRandomRoom()
+    public Room GetRandomRoom()
     {
         int index = rand.Next(rooms_cache.Count);
         foreach (var room in rooms_cache.Values)

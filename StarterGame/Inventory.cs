@@ -86,7 +86,7 @@ public class Inventory : IInventory
 
     public int DelItem(Item item, int ammount)
     {
-        if (ammount > item.numberOf) // clamp
+        if (ammount < item.numberOf) // clamp
         {
             Capacity_onboard    -= ammount;
             Weight_onboard      -= (ammount * item.mass);

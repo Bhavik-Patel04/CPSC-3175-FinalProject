@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System;
+using System.Xml.Linq;
 
 namespace StarterGame
 {
@@ -13,28 +14,32 @@ namespace StarterGame
         private Parser _parser;
         private bool _playing;
         private MapGenerator mapGenerator;
+        private CharacterCreator creator;
         public Game()
         {
             _playing                = false;
-            mapGenerator            = new MapGenerator();
             _parser                 = new Parser(new CommandWords());
+
+
+
+            creator                 = new CharacterCreator();
+
+
             MapGenerator gen        = new MapGenerator();
             Room start              = gen.Generate(100);
 
+
+            // map out debug
             MapDebugger.PrintAll(start);
 
-            _player         = new Player(start);
+            _player                 = creator.createRandomPerson(); // main player 
+            _player.SpawnWarp(start);
+            _player.NormalMessage($"Ahh you have awken...{_player.name}");
         }
 
-        // This creates a very simple world based 
-        // on the landscape of Columbus State University
 
-    /**
-     *  Main play routine.  Loops until end of play.
-     *  Although this is a basic Game Loop Design pattern
-     *  you may not count it as one of your design
-     *  patterns in the final project.
-     */
+
+
         public void Play()
         {
 

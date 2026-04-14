@@ -9,10 +9,10 @@ public class Wallet
 
     public int Capacity { get; private set; }
 
-    public Wallet(int capacity)
+    public Wallet(int start,int capacity)
     {
         this.Capacity = capacity;
-        gold = 0;
+        gold          = start;
 
     }
 
@@ -40,12 +40,7 @@ public class Wallet
         }
         else
         {
-            if (player.AddGold(amount))
-            {
-                gold -= amount;
-                Console.WriteLine($"{amount} gold given. Current gold: {gold}");
-                return true;
-            }
+           // hmmmmmmm
         }
         return false;
     }
