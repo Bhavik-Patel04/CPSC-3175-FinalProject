@@ -18,8 +18,8 @@ namespace StarterGame
         private Room _currentRoom = null;
         public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
-        private Inventory main_inventory    = new Inventory();
-        private Wallet wallet               = new Wallet(1000);
+        public Inventory main_inventory    = new Inventory();
+        public Wallet wallet               = new Wallet(1000);
 
 
 
@@ -45,13 +45,12 @@ namespace StarterGame
 
         public void RemoveFromInventory(Item item)
         {
-            main_inventory.DelItem_id(item.id, item.numberOf);
+            //main_inventory.DelItem_id(item.id, item.numberOf);
         }
 
         public void ShowInventory()
         {
-            NormalMessage("\nYour inventory contains:");
-            main_inventory.ShowInventory();
+            NormalMessage(main_inventory.ReadInventory());
         }
 
 

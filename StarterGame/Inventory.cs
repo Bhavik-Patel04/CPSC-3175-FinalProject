@@ -1,15 +1,47 @@
-﻿using System;
+﻿using StarterGame;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 public class Inventory : IInventory
 {
 
     private Dictionary<string, Item> pocket = new Dictionary<string, Item>(); // make that 
-    private int Capacity = 100;
-    private double Weight_onboard = 0.00;
-    private double Weight_cap = 75.00;
-    private int Capacity_onboard = 0;
+    private int Capacity                = 100;
+    private double Weight_onboard       = 0.00;
+    private double Weight_cap           = 75.00;
+    private int Capacity_onboard        = 0;
 
+
+
+
+    public Item? getItem(string id)
+    {
+        if (pocket.ContainsKey(id))
+        {
+            return pocket[id];
+        }
+        return null;
+    }
+
+
+
+    public void useItem( string id , int ammount)
+    {
+        Item item = getItem(id);
+        if (item != null)
+        {
+            if (item.type == "consumable")
+            {
+                // really need to send this to a processor or something here 
+                // get properties 
+                // send them to a thing to use it 
+
+                int amt_used = DelItem(item,ammount);
+                
+            }
+        }
+    }
 
 
 
@@ -24,8 +56,8 @@ public class Inventory : IInventory
             {
                 if (Capacity_onboard + item.numberOf <= Capacity)
                 {
-                    Capacity_onboard += item.numberOf;  // capacity
-                    Weight_onboard += item_mass;     // add up mass
+                    Capacity_onboard         += item.numberOf;  // capacity
+                    Weight_onboard           += item_mass;     // add up mass
                     pocket[item.id].numberOf += item.numberOf; // add
 
                     return true;
@@ -50,40 +82,45 @@ public class Inventory : IInventory
         return false;
     }
 
-    public void DropItem(string id, int numberOf)
-    {
 
+
+    public int DelItem(Item item, int ammount)
+    {
+        if (ammount > item.numberOf) // clamp
+        {
+            Capacity_onboard    -= ammount;
+            Weight_onboard      -= (ammount * item.mass);
+            item.numberOf       -= ammount;
+            return ammount;
+        }
+        else
+        {
+            // create persitant tracking
+            string temp_id          = item.id;
+            int temp_actualAmmount  = 0;
+
+            temp_actualAmmount   = item.numberOf;
+            Capacity_onboard    -= item.numberOf;
+            Weight_onboard      -= (item.numberOf) * item.mass;
+            pocket.Remove(temp_id);
+            return temp_actualAmmount;
+
+        }
     }
 
-    public void DelItem_id(string id, int ammount)
+
+
+    public string ReadInventory()
     {
-        if (pocket.ContainsKey(id))
+        if (pocket.Count != 0)
         {
-            if (ammount >= pocket[id].numberOf) // clamp
+            foreach (var item in pocket.Values)
             {
-                Capacity_onboard -= pocket[id].numberOf;
-                Weight_onboard -= (pocket[id].numberOf) * pocket[id].mass;
-                pocket.Remove(id);
-            }
-            else
-            {
-                Capacity_onboard -= ammount;
-                Weight_onboard -= (ammount * pocket[id].mass);
-                pocket[id].numberOf -= ammount;
+                return $"{item.id} >>> {item.numberOf} (Mass: {item.mass * item.numberOf}";
             }
         }
+        return "Your inventory is empty...";
     }
 
-    public void ShowInventory()
-    {
-        if (pocket.Count == 0)
-        {
-            Console.WriteLine("Your inventory is empty.");
-            return;
-        }
-        foreach (var item in pocket.Values)
-        {
-            Console.WriteLine($"{item.id} x{item.numberOf} (Mass: {item.mass * item.numberOf})");
-        }
-    }
+
 }

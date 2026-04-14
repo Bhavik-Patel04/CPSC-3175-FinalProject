@@ -26,7 +26,7 @@ namespace StarterGame
                         player.CurrentRoom.Actions[this.SecondWord].Execute();
                         return false;
                     }
-                    player.WarningMessage("\nYou shall not do that thing that you wish you could do.. here... rn ");
+                    player.WarningMessage($"\nYou shall not do '{this.SecondWord}' in this location... ");
                 }
             }
             else
