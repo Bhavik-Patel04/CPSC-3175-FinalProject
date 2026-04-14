@@ -10,11 +10,11 @@ namespace StarterGame
      */
     public class Game
     {
-        private Player _player;
-        private Parser _parser;
-        private bool _playing;
-        private MapGenerator mapGenerator;
-        private CharacterCreator creator;
+        private Player              _player;
+        private Parser              _parser;
+        private bool                _playing;
+        private MapGenerator        mapGenerator;
+        private CharacterCreator    creator;
         public Game()
         {
             _playing                = false;
