@@ -5,10 +5,10 @@ public class Inventory : IInventory
 {
 
     private Dictionary<string, Item> pocket = new Dictionary<string, Item>(); // make that 
-    private int Capacity            = 100;
-    private double Weight_onboard   = 0.00;
-    private double Weight_cap       = 75.00;
-    private int Capacity_onboard    = 0;
+    private int Capacity = 100;
+    private double Weight_onboard = 0.00;
+    private double Weight_cap = 75.00;
+    private int Capacity_onboard = 0;
 
 
 
@@ -23,11 +23,11 @@ public class Inventory : IInventory
             if ((item_mass + Weight_onboard) <= Weight_cap)
             {
                 if (Capacity_onboard + item.numberOf <= Capacity)
-                { 
-                    Capacity_onboard         += item.numberOf  // capacity
-                    Weight_onboard           += item_mass;     // add up mass
+                {
+                    Capacity_onboard += item.numberOf;  // capacity
+                    Weight_onboard += item_mass;     // add up mass
                     pocket[item.id].numberOf += item.numberOf; // add
-                    
+
                     return true;
                 }
             }
@@ -50,31 +50,40 @@ public class Inventory : IInventory
         return false;
     }
 
-    public void DropItem(string id,int numberOf)
+    public void DropItem(string id, int numberOf)
     {
-        
+
     }
 
-    public void DelItem_id(string id,int ammount)
+    public void DelItem_id(string id, int ammount)
     {
         if (pocket.ContainsKey(id))
         {
             if (ammount >= pocket[id].numberOf) // clamp
             {
-                Capacity_onboard    -= pocket[id].numberOf;
-                Weight_onboard      -= (pocket[id].numberOf) * pocket[id].mass;
+                Capacity_onboard -= pocket[id].numberOf;
+                Weight_onboard -= (pocket[id].numberOf) * pocket[id].mass;
                 pocket.Remove(id);
             }
             else
             {
-                Capacity_onboard    -= ammount;
-                Weight_onboard      -= (ammount * pocket[id].mass);
+                Capacity_onboard -= ammount;
+                Weight_onboard -= (ammount * pocket[id].mass);
                 pocket[id].numberOf -= ammount;
             }
-        }           
+        }
     }
 
-
-
-
+    public void ShowInventory()
+    {
+        if (pocket.Count == 0)
+        {
+            Console.WriteLine("Your inventory is empty.");
+            return;
+        }
+        foreach (var item in pocket.Values)
+        {
+            Console.WriteLine($"{item.id} x{item.numberOf} (Mass: {item.mass * item.numberOf})");
+        }
+    }
 }

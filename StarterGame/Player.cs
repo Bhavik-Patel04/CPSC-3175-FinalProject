@@ -19,7 +19,7 @@ namespace StarterGame
         public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
         private Inventory main_inventory    = new Inventory();
-        private Wallet wallet               = new Wallet();
+        private Wallet wallet               = new Wallet(1000);
 
 
 
@@ -28,11 +28,30 @@ namespace StarterGame
             _currentRoom = room;
         }
 
+        public bool AddGold(int amount)
+        {
+            return wallet.AddGold(amount);
+        }
 
+        public void GiveGold(int amount, Player player)
+        {
+            wallet.GiveGold(amount, player);
+        }
 
         public void AddToInventory(Item item) 
         {
             main_inventory.AddItem(item);
+        }
+
+        public void RemoveFromInventory(Item item)
+        {
+            main_inventory.DelItem_id(item.id, item.numberOf);
+        }
+
+        public void ShowInventory()
+        {
+            NormalMessage("\nYour inventory contains:");
+            main_inventory.ShowInventory();
         }
 
 
