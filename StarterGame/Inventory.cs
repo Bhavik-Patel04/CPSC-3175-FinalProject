@@ -24,8 +24,8 @@ public class Inventory : IInventory
             {
                 if (Capacity_onboard + item.numberOf <= Capacity)
                 { 
-                    Capacity_onboard += item.numberOf
-                    Weight_onboard += item_mass;     // add up mass
+                    Capacity_onboard         += item.numberOf  // capacity
+                    Weight_onboard           += item_mass;     // add up mass
                     pocket[item.id].numberOf += item.numberOf; // add
                     
                     return true;

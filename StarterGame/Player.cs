@@ -19,7 +19,7 @@ namespace StarterGame
         public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
         private Inventory main_inventory    = new Inventory();
-        //private Wallet wallet               = new Wallet();
+        private Wallet wallet               = new Wallet();
 
 
 
