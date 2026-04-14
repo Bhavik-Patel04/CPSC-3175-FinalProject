@@ -14,11 +14,13 @@ namespace StarterGame
      */
     public class Player
     {
+
         private Room _currentRoom = null;
         public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
-        private Double health = 100.00;
-        private bool combat_state = false;
+        private Inventory main_inventory    = new Inventory();
+        //private Wallet wallet               = new Wallet();
+
 
 
         public Player(Room room)
@@ -27,18 +29,12 @@ namespace StarterGame
         }
 
 
-        // combat hit register
-        public void hit(double points)
+
+        public void AddToInventory(Item item) 
         {
-            if (health > points)
-            {
-                health -= points;
-            }
-            else 
-            {
-                health = 0;
-            }
+            main_inventory.AddItem(item);
         }
+
 
 
         public void WaltTo(string direction)
