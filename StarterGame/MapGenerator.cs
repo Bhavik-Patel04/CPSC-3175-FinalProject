@@ -68,7 +68,7 @@ public class MapGenerator
         return rooms_cache["room0"]; 
     }
 
-    
+
     private Dictionary<string,Action> BindActions(string type)
     {
 

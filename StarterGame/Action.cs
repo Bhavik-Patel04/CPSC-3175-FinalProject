@@ -1,7 +1,6 @@
-﻿using StarterGame;
-using System;
+﻿using System;
 
 public interface Action
 {
-	public void Execute(Player player);
+	public void Execute();
 }
