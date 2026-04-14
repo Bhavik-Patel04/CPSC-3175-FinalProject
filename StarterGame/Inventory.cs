@@ -17,7 +17,7 @@ public class Inventory : IInventory
             return;
         }
         pocket.Add(item.id,item);
-    }
+    } 
 
 
     public void DropItem(string id,int numberOf)
