@@ -9,6 +9,10 @@ public class Inventory : IInventory
     private double Weight_onboard   = 0.00;
     private double Weight_cap       = 75.00;
     private int Capacity_onboard    = 0;
+
+
+
+
     public bool AddItem(Item item)
     {
         // exists in dictionary
@@ -18,8 +22,8 @@ public class Inventory : IInventory
             // check if adding it makes us over weight...
             if ((item_mass + Weight_onboard) <= Weight_cap)
             {
-                if (item.numberOf+ Capacity_onboard <= Capacity - item.numberOf) {
-                    
+                if (Capacity_onboard + item.numberOf <= Capacity)
+                { 
                     Capacity_onboard += item.numberOf
                     Weight_onboard += item_mass;     // add up mass
                     pocket[item.id].numberOf += item.numberOf; // add
@@ -32,11 +36,14 @@ public class Inventory : IInventory
         else
         {
             double item_mass = (item.numberOf * item.mass);
-            if ((item_mass + Weight_onboard) <= Weight_cap)
+            if (Capacity_onboard + item.numberOf <= Capacity)
             {
-                Weight_onboard += item_mass;     // add up mass
-                pocket.Add(item.id, item);
-                return true;
+                if ((item_mass + Weight_onboard) <= Weight_cap)
+                {
+                    Weight_onboard += item_mass;     // add up mass
+                    pocket.Add(item.id, item);
+                    return true;
+                }
             }
         }
 
@@ -52,14 +59,16 @@ public class Inventory : IInventory
     {
         if (pocket.ContainsKey(id))
         {
-            if (ammount >= pocket[id].numberOf)
+            if (ammount >= pocket[id].numberOf) // clamp
             {
-                Weight_onboard -= (pocket[id].numberOf) * pocket[id].mass;
+                Capacity_onboard    -= pocket[id].numberOf;
+                Weight_onboard      -= (pocket[id].numberOf) * pocket[id].mass;
                 pocket.Remove(id);
             }
             else
             {
-                Weight_onboard -= (ammount * pocket[id].mass);
+                Capacity_onboard    -= ammount;
+                Weight_onboard      -= (ammount * pocket[id].mass);
                 pocket[id].numberOf -= ammount;
             }
         }           
