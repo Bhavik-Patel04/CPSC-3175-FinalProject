@@ -10,11 +10,35 @@ public class MapGenerator
     private Random rand = new Random();
     private string[] directions = { "north", "south", "east", "west" };
     
+    // Huge random underground maze geberator - very hard to find the way out 
+    // randomly links rooms, some rooms fold back in ways that can not be described on a flat map 
+    // could add a Z component to track you height in the dungon
+
+
+    public void generator2(int levels = 10, int sprawl = 30)
+    {
+        rooms_cache          = new Dictionary<string, Room>();
+        Random uplink_room   = new Random();
+        for (int levels_ = 0; levels_ < levels; levels_++)
+        {
+            int toNextLevel = uplink_room.Next(sprawl);
+            for (int sprawl_ = 0; sprawl_ < sprawl; sprawl_++)
+            {
+                if (true)
+                {
+
+                }
+            }
+        }
+    }
+
+
+
 
     public Room Generate(int roomCount = 10)
     { 
         rooms_cache = new Dictionary<string, Room>();
-         
+        int Room_depth = 12000; // really deep mine shafts
         // 1. generate
         for (int i = 0; i < roomCount; i++)
         {
@@ -45,6 +69,7 @@ public class MapGenerator
              
             a.SetExit(dir, b);
             b.SetExit(opposite, a);
+           
         }
           
         // Add random extra connections 
@@ -127,7 +152,7 @@ public class MapGenerator
 
 
 
-    private Room GetRandomRoom()
+    public Room GetRandomRoom()
     {
         int index = rand.Next(rooms_cache.Count);
         foreach (var room in rooms_cache.Values)

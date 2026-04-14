@@ -15,46 +15,29 @@ namespace StarterGame
     public class Player
     {
 
-        private Room _currentRoom = null;
-        public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
-
-        private Inventory main_inventory    = new Inventory();
-        private Wallet wallet               = new Wallet(1000);
+        private Room             _currentRoom = null;
+        public Room              CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
 
 
-        public Player(Room room)
+        public Inventory         main_inventory; // move this to a maker 
+        public Wallet            wallet;
+        public HealthSystem      health ;
+
+        public string name {  get; init; }
+        public Player(string name, Inventory I_,Wallet W_, HealthSystem H_, Room room)
         {
-            _currentRoom = room;
+            this.main_inventory = I_;
+            this.wallet         = W_;
+            this.health         = H_; 
+            this._currentRoom   = room;
+            this.name           = name;
         }
 
-        public bool AddGold(int amount)
+        public void SpawnWarp(Room room) // push to room 
         {
-            return wallet.AddGold(amount);
+            this._currentRoom = room;
         }
-
-        public void GiveGold(int amount, Player player)
-        {
-            wallet.GiveGold(amount, player);
-        }
-
-        public void AddToInventory(Item item) 
-        {
-            main_inventory.AddItem(item);
-        }
-
-        public void RemoveFromInventory(Item item)
-        {
-            main_inventory.DelItem_id(item.id, item.numberOf);
-        }
-
-        public void ShowInventory()
-        {
-            NormalMessage("\nYour inventory contains:");
-            main_inventory.ShowInventory();
-        }
-
-
 
         public void WaltTo(string direction)
         {
