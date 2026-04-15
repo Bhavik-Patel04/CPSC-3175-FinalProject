@@ -38,6 +38,7 @@ namespace StarterGame
             if (this.HasSecondWord())
             {
                 // this would be the destination of the conversation < - then there needs to be a dialog option lol 
+
                 return false;
             }
             else

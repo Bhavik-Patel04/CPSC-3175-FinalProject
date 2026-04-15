@@ -73,14 +73,13 @@ namespace StarterGame
                     _player.NormalMessage("\n" + _player.CurrentRoom.Description());
                     Console.Write("\n>");
                     Command command = _parser.ParseCommand(Console.ReadLine());
+                    Console.Clear();
                     if (command == null)
-                    {
-                        Console.Clear();
+                    {   
                         _player.ErrorMessage("I don't understand...");
                     }
                     else
                     {
-                        Console.Clear();
                         finished = command.Execute(_player);
                     }
                     
