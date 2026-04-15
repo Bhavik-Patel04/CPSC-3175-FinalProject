@@ -40,6 +40,9 @@ namespace StarterGame
         {
             // things that need to update in the background go here 
             // ai can go here 
+
+            // if active player - is in a room - NPCs wont move
+            // only move if not in room on update
         }
 
 
