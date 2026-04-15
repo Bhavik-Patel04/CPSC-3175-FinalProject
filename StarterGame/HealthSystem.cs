@@ -23,7 +23,9 @@ public class HealthSystem
 	}
 
 
-   
+
+
+
 
     public void update()
     {
@@ -107,6 +109,19 @@ public class HealthSystem
         {
             health_ammount = maxHealth;
         }
+    }
+
+
+    public void potion_settings(int maxTime, int amt)
+    {
+        potion_effect_maxTime = maxTime;
+        potion_effect_amt = amt;
+    }
+
+    public void bleed_settings(int maxTime, int amt)
+    {
+        bleed_effect_maxTime = maxTime;
+        bleed_effect_amt = amt;
     }
 
 
