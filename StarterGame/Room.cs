@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace StarterGame
 {
@@ -17,6 +18,10 @@ namespace StarterGame
         private Dictionary<string, Room> _exits;
         private string _tag;
         private string _conjunction;
+
+        private  Dictionary<string, Player> players_in_room = new Dictionary<string, Player>();
+         
+
         public string Tag { get { return _tag; } set { _tag = value; } }
         public string Conjunction { get { return _conjunction; } set { _conjunction = value; } }
 
@@ -45,7 +50,30 @@ namespace StarterGame
             Actions.Add(key, action_);
         }
 
- 
+
+        // entered room and etix room notification 
+        public void PlayerHasEnteredRoom(Player player_)
+        {
+            players_in_room.Add(player_.name, player_);
+        }
+
+        public void PlayerHasLeftRoom(Player player_)
+        {
+            players_in_room.Remove(player_.name);
+        }
+
+
+
+        public List<string> OccupancyToList(Player player_ )
+        {
+            List<string> list_ = new List<string>();
+            foreach (var kv in players_in_room)
+            {
+                list_.Add(kv.Key);
+            }
+            return list_;
+        }
+
 
         public void SetExit(string exitName, Room room)
         {

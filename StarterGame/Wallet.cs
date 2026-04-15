@@ -40,7 +40,7 @@ public class Wallet
         }
         else
         {
-           // hmmmmmmm
+           //
         }
         return false;
     }

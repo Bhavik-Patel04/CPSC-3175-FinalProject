@@ -19,7 +19,7 @@ namespace StarterGame
         {
             if (this.HasSecondWord())
             {
-                player.WaltTo(this.SecondWord);
+                player.goTo(this.SecondWord);
             }
             else
             {

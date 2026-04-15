@@ -34,24 +34,55 @@ namespace StarterGame
             this.name           = name;
         }
 
-        public void SpawnWarp(Room room) // push to room 
+
+        // internal updater 
+        public void update()
         {
-            this._currentRoom = room;
+            // things that need to update in the background go here 
+            // ai can go here 
+
+            // if active player - is in a room - NPCs wont move
+            // only move if not in room on update
+
+            // think aboiut bleed effects, money loss spwll, etc
         }
 
-        public void WaltTo(string direction)
+
+        public void SpawnWarp(Room room) // push to room 
+        {
+            if (CurrentRoom != null)
+            {
+                CurrentRoom.PlayerHasLeftRoom(this); // leave old room
+            }
+            room.PlayerHasEnteredRoom(this); // enter next 
+            this._currentRoom = room;        // set the ref 
+        }
+
+
+
+        public void goTo(string direction)
         {
             Room nextRoom = CurrentRoom.GetExit(direction);
             if (nextRoom != null)
             {
-                CurrentRoom = nextRoom;
-                NormalMessage("\n" + this.CurrentRoom.Description());
+
+                
+                CurrentRoom.PlayerHasLeftRoom(this); // leave old room 
+                nextRoom.PlayerHasEnteredRoom(this); // enter next 
+                CurrentRoom = nextRoom;              // set ref inside player
+                
             }
             else
             {
-                ErrorMessage("\nThere is no door on " + direction);
+                ErrorMessage("\nThere is no path " + direction);
             }
         }
+
+
+
+
+
+
 
         public void OutputMessage(string message)
         {
