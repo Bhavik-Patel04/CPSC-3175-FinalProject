@@ -66,7 +66,7 @@ public class MapGenerator
                 b.SetExit(opposite, a);
             }
 
-            // set up rooms // path to next level hiden 
+            // set up rooms // path to next level 
             if (levels_ >= 1)
             {
                 Room a = GetRandomRoomByLevel(levels_ - 1);     // lower room 
@@ -91,6 +91,8 @@ public class MapGenerator
         if (type == "mine")
         {
             actions_.Add("mining",new MineAction());
+            // search 
+            // other stuff here
         }
         return actions_;
     }

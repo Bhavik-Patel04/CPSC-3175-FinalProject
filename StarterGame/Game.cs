@@ -43,19 +43,17 @@ namespace StarterGame
                 bool finished = false;
                 while (!finished)
                 {
-                    
                     creator.update(); // internal updater for players 
 
-
+                    // death and restart screen 
                     if (!_player.health.isAlive())
                     {
-                        // draw death screen 
                         _player.ErrorMessage("You have faild...");
                         _player.WarningMessage("press any key and enter...");
                         string ok = Console.ReadLine();
 
                         // retart or respawn
-                        if (!_player.health.hasLives())
+                        if (!_player.health.useLife())              // decrement and check
                         {
                             // new game start here - generate new map
                             Room start          = mapGenerator.Generate();
@@ -65,10 +63,11 @@ namespace StarterGame
                         else
                         {
                             // respawn here 
-                            mapGenerator.GetRandomRoomByLevel(0); // respawn at the bottom 
+                            mapGenerator.GetRandomRoomByLevel(0);   // respawn at the bottom 
                         }
-
                     }
+
+
                     // main controller 
                     Console.Write("\n>");
                     Command command = _parser.ParseCommand(Console.ReadLine());
@@ -102,19 +101,17 @@ namespace StarterGame
 
         public string Welcome()
         {
-            return $"Ahh, so you have awaken.. Drunken again, {_player.name}...\n"+
-                   "Do you not feel the Earth? Do you not hear her word?\n"+
-                   "The Mountain shakes with wrath and anger in the great distance and in the Heavens.\n" +
-                   "The paths to the Heavens are tangled with the roots of the Abyss,\n"+
-                   "Ive heard tale of passages to above, to where the olds gods covet their powers.\n" +
-                   "Forge you way through the mountain. The gods lay above.\n" +
-                   "Do not let the hunger of the deep claim your soul.\n"+
-                   "Claim your desteny with the gods... \n"+
-                   "Ye may never get another chance.\n"+
-                   "The passages to the old tunnels are shifting around you.. \n"+
-                   "as you ponder the meaning to your own questions... Go forth! "+
-                   "\n"+"\n"+
-                   _player.CurrentRoom.Description();
+            return $"Ahh... so you awaken once more, {_player.name}... drunk on more than just ale.\n" +
+                   "Do you not feel it? The earth stirs beneath you. She whispers still.\n" +
+                   "Far beyond these halls, the Mountain trembles — not with age, but with wrath.\n" +
+                   "The paths above are choked... bound in the roots of the Abyss.\n" +
+                   "Yet there are passages, hidden and half-forgotten — ways to where the old gods hoard their fading power.\n" +
+                   "Carve your path through stone and shadow. The gods linger above.\n" +
+                   "But heed this: let not the hunger below take hold of your soul.\n" +
+                   "Seize what fate remains to you... or be buried with the rest.\n" +
+                   "The tunnels shift. The deep closes in.\n" +
+                   "Do not linger in doubt.\n" +
+                   "Go forth.\n\n" + _player.CurrentRoom.Description();
         }
 
         public string Goodbye()

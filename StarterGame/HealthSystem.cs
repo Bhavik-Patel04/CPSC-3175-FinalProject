@@ -1,19 +1,58 @@
 ﻿using System;
+using System.Data;
 
 public class HealthSystem
 {
-    private int maxHealth       = 100;
-	private int health_ammount  = 100;
-    private int lives_ammount   = 2;
+    private int maxHealth               = 100;
+	private int health_ammount          = 100;
+    private int lives_ammount           = 2;
 
-	public HealthSystem()
+    private bool bleed_effect           = false;    // bleed effects - bleed out over time 
+    private int bleed_effect_time       = 0;
+    private int bleed_effect_maxTime    = 5;
+    private int bleed_effect_amt        = 1;
+
+    private bool potion_effect          = false;   // potion increases health over time 
+    private int potion_effect_time      = 0;
+    private int potion_effect_maxTime   = 5;
+    private int potion_effect_amt       = 2;
+
+
+    public HealthSystem()
 	{
 	}
+
+
+   
+
+    public void update()
+    {
+        bleed();
+        potion();
+    }
+
+
+
 
     public int SetMaxHealth(int amount)
     {
         maxHealth = amount;
         return maxHealth;
+    }
+
+    public void addLives(int amt)
+    {
+        lives_ammount += amt;
+    }
+
+    public bool useLife()
+    {
+        if (lives_ammount > 0)
+        {
+            lives_ammount -= 1;
+            return true;
+        }
+        return false;
     }
 
     public bool hasLives()
@@ -55,6 +94,40 @@ public class HealthSystem
         else
         {
             health_ammount = maxHealth;
+        }
+    }
+
+
+    // Helper functions 
+    private void bleed()
+    {
+        if (bleed_effect)
+        {
+            bleed_effect_time++;
+            if (bleed_effect_time < bleed_effect_maxTime)
+            {
+                Hit(bleed_effect_amt);
+            }
+            else
+            {
+                bleed_effect = false;
+            }
+        }
+    }
+
+    private void potion()
+    {
+        if (potion_effect)
+        {
+            potion_effect_time++;
+            if (potion_effect_time < potion_effect_maxTime)
+            {
+                reginerate(potion_effect_amt);
+            }
+            else
+            {
+                potion_effect = false;
+            }
         }
     }
 
