@@ -34,24 +34,45 @@ namespace StarterGame
             this.name           = name;
         }
 
+
+
+
         public void SpawnWarp(Room room) // push to room 
         {
-            this._currentRoom = room;
+            if (CurrentRoom != null)
+            {
+                CurrentRoom.PlayerHasLeftRoom(this); // leave old room
+            }
+            room.PlayerHasEnteredRoom(this); // enter next 
+            this._currentRoom = room;        // set the ref 
         }
+
 
         public void WaltTo(string direction)
         {
             Room nextRoom = CurrentRoom.GetExit(direction);
             if (nextRoom != null)
             {
-                CurrentRoom = nextRoom;
+
+                
+                CurrentRoom.PlayerHasLeftRoom(this); // leave old room 
+                nextRoom.PlayerHasEnteredRoom(this); // enter next 
+                CurrentRoom = nextRoom;              // set ref inside player
+                
+                // announce to the room that we have entered here ? 
                 NormalMessage("\n" + this.CurrentRoom.Description());
             }
             else
             {
-                ErrorMessage("\nThere is no door on " + direction);
+                ErrorMessage("\nThere is no path " + direction);
             }
         }
+
+
+
+
+
+
 
         public void OutputMessage(string message)
         {

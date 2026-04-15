@@ -3,101 +3,91 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.AccessControl;
+using System.Transactions;
 
 public class MapGenerator
 {
-    private Dictionary<string, Room> rooms_cache;
+    private Dictionary<int, Dictionary<int,Room>> rooms_cache;
     private Random rand = new Random();
     private string[] directions = { "north", "south", "east", "west" };
-    
+
     // Huge random underground maze geberator - very hard to find the way out 
     // randomly links rooms, some rooms fold back in ways that can not be described on a flat map 
     // could add a Z component to track you height in the dungon
 
 
-    public void generator2(int levels = 10, int sprawl = 30)
+    public Room Generate(int levels = 10, int sprawl = 30)
     {
-        rooms_cache          = new Dictionary<string, Room>();
-        Random uplink_room   = new Random();
+        rooms_cache = new Dictionary<int, Dictionary<int,Room>>();
+        Random uplink_room = new Random();
         for (int levels_ = 0; levels_ < levels; levels_++)
         {
-            int toNextLevel = uplink_room.Next(sprawl);
+            rooms_cache[levels_] = new Dictionary<int, Room>();
             for (int sprawl_ = 0; sprawl_ < sprawl; sprawl_++)
             {
-                if (true)
-                {
+                string key = $"level{levels_}room{sprawl_}";
+                string type = TypeDiceRoll(); // roll for a type 
 
-                }
+                Dictionary<string, Action> actions_ = BindActions(type);
+                rooms_cache[levels_][sprawl_] = new Room(
+                                            key,
+                                            "in",
+                                            type,           // rolled by dice roll 
+                                            actions_        // pass activities here
+                                            );
             }
+
+            // chain link rooms
+            for (int sprawl_ = 0; sprawl_ < sprawl-1; sprawl_++)
+            {
+                Room a = rooms_cache[levels_][sprawl_];
+                Room b = rooms_cache[levels_][sprawl_+1];
+
+                string dir          = GetRandomDirection();
+                string opposite     = GetOpposite(dir);
+
+                a.SetExit(dir, b);
+                b.SetExit(opposite, a);
+            }
+
+    
+            // add random connections 
+            for (int i = 0; i < sprawl; i++)
+            {
+                Room a = GetRandomRoomByLevel(levels_);
+                Room b = GetRandomRoomByLevel(levels_);
+
+                if (a == b) continue;
+
+                string dir      = GetRandomDirection();
+                string opposite = GetOpposite(dir);
+
+                a.SetExit(dir, b);
+                b.SetExit(opposite, a);
+            }
+
+            // set up rooms // path to next level hiden 
+            if (levels_ >= 1)
+            {
+                Room a = GetRandomRoomByLevel(levels_ - 1);     // lower room 
+                Room b = GetRandomRoomByLevel(levels_);         // upper room
+
+                a.SetExit("up", b);
+                b.SetExit("down", a);
+            }
+
+
         }
+        return rooms_cache[0][0];
     }
 
-
-
-
-    public Room Generate(int roomCount = 10)
-    { 
-        rooms_cache = new Dictionary<string, Room>();
-        int Room_depth = 12000; // really deep mine shafts
-        // 1. generate
-        for (int i = 0; i < roomCount; i++)
-        {
- 
-            string key  = "room" + i;
-            string type = TypeDiceRoll(); // roll for a type 
-
-            // bind the activities for each room here 
-
-            Dictionary<string,Action> actions_ = BindActions(type);
-            rooms_cache[key] = new Room(
-                                        $"Room #{i}",
-                                        "in",
-                                        type,           // rolled by dice roll 
-                                        actions_        // pass activities here
-                                        ); 
-
-        }
-
-        // Chain / link rooms 
-        for (int i = 0; i < roomCount - 1; i++)
-        {  
-            Room a = rooms_cache["room" + i]; 
-            Room b = rooms_cache["room" + (i + 1)];
-              
-            string dir          = GetRandomDirection();
-            string opposite     = GetOpposite(dir);
-             
-            a.SetExit(dir, b);
-            b.SetExit(opposite, a);
-           
-        }
-          
-        // Add random extra connections 
-        int extraConnections = roomCount; 
-
-        for (int i = 0; i < extraConnections; i++)
-        {  
-            Room a              = GetRandomRoom();
-            Room b              = GetRandomRoom();    
-
-            if (a == b) continue;
-
-            string dir         = GetRandomDirection();
-            string opposite    = GetOpposite(dir); 
-             
-            a.SetExit(dir, b);
-            b.SetExit(opposite, a); 
-        }
-         
-        // Return starting room 
-        return rooms_cache["room0"]; 
-    }
 
 
     private Dictionary<string,Action> BindActions(string type)
     {
 
         Dictionary<string, Action>  actions_  = new Dictionary<string, Action>(); 
+
         if (type == "mine")
         {
             actions_.Add("mining",new MineAction());
@@ -151,17 +141,17 @@ public class MapGenerator
     }
 
 
-
-    public Room GetRandomRoom()
+    public Room GetRandomRoomByLevel(int level)
     {
-        int index = rand.Next(rooms_cache.Count);
-        foreach (var room in rooms_cache.Values)
+        int index = rand.Next(rooms_cache[level].Count);
+        foreach (var room in rooms_cache[level].Values)
         {
             if (index-- == 0)
                 return room;
         }
         return null;
     }
+
 
 
 
@@ -186,8 +176,12 @@ public class MapGenerator
 
 
 
-    public Room GetRoom(string key)
+    public Room GetRoom(int level, int room)
     {
-        return rooms_cache.ContainsKey(key) ? rooms_cache[key] : null;
+        if (rooms_cache.ContainsKey(level) && rooms_cache[level].ContainsKey(room))
+        {
+            return rooms_cache[level][room];
+        }
+        return null;
     }
 }

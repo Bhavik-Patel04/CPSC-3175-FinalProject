@@ -26,11 +26,9 @@ namespace StarterGame
 
 
             MapGenerator gen        = new MapGenerator();
-            Room start              = gen.Generate(100);
+            Room start              = gen.Generate();
 
 
-            // map out debug
-            MapDebugger.PrintAll(start);
 
             _player                 = creator.createRandomPerson(); // main player 
             _player.SpawnWarp(start);
