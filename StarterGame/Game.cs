@@ -68,17 +68,22 @@ namespace StarterGame
                     }
 
 
+
                     // main controller 
+                    _player.NormalMessage("\n" + _player.CurrentRoom.Description());
                     Console.Write("\n>");
                     Command command = _parser.ParseCommand(Console.ReadLine());
                     if (command == null)
                     {
+                        Console.Clear();
                         _player.ErrorMessage("I don't understand...");
                     }
                     else
                     {
+                        Console.Clear();
                         finished = command.Execute(_player);
                     }
+                    
                 }
             }
 
@@ -111,7 +116,7 @@ namespace StarterGame
                    "Seize what fate remains to you... or be buried with the rest.\n" +
                    "The tunnels shift. The deep closes in.\n" +
                    "Do not linger in doubt.\n" +
-                   "Go forth.\n\n" + _player.CurrentRoom.Description();
+                   "Go forth.\n\n";
         }
 
         public string Goodbye()

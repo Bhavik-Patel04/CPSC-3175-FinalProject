@@ -16,7 +16,7 @@ public class MapGenerator
     // randomly links rooms, some rooms fold back in ways that can not be described on a flat map 
     // could add a Z component to track you height in the dungon
 
-    public Room Generate(int levels = 10, int sprawl = 30)
+    public Room Generate(int levels = 10, int sprawl = 40)
     {
         rooms_cache = new Dictionary<int, Dictionary<int,Room>>();
         Random uplink_room = new Random();
@@ -25,12 +25,12 @@ public class MapGenerator
             rooms_cache[levels_] = new Dictionary<int, Room>();
             for (int sprawl_ = 0; sprawl_ < sprawl; sprawl_++)
             {
-                string key = $"level{levels_}room{sprawl_}";
+                string key = $"level{levels_} : area{sprawl_}";
                 string type = TypeDiceRoll(); // roll for a type 
 
                 Dictionary<string, Action> actions_ = BindActions(type);
                 rooms_cache[levels_][sprawl_] = new Room(
-                                            key,
+                                            key,            // location referenct - for display
                                             "in",
                                             type,           // rolled by dice roll 
                                             actions_        // pass activities here
@@ -91,7 +91,7 @@ public class MapGenerator
         if (type == "mine")
         {
             actions_.Add("mining",new MineAction());
-            // search 
+            // search - returns things in the room like objects
             // other stuff here
         }
         return actions_;
@@ -125,7 +125,7 @@ public class MapGenerator
 
         if (roll >= .55 && roll < .56)  // 1% roll 
         {
-            type = "trap";
+            type = "trap"; // teleporter
         }
 
         if (roll >= .56 && roll < .57)  // 1% roll 

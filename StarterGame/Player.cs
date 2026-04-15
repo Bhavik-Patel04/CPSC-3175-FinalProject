@@ -71,8 +71,6 @@ namespace StarterGame
                 nextRoom.PlayerHasEnteredRoom(this); // enter next 
                 CurrentRoom = nextRoom;              // set ref inside player
                 
-                // announce to the room that we have entered here ? 
-                NormalMessage("\n" + this.CurrentRoom.Description());
             }
             else
             {
