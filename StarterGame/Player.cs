@@ -35,6 +35,12 @@ namespace StarterGame
         }
 
 
+        // internal updater 
+        public void update()
+        {
+            // things that need to update in the background go here 
+            // ai can go here 
+        }
 
 
         public void SpawnWarp(Room room) // push to room 

@@ -11,10 +11,10 @@ public class MapGenerator
     private Random rand = new Random();
     private string[] directions = { "north", "south", "east", "west" };
 
+
     // Huge random underground maze geberator - very hard to find the way out 
     // randomly links rooms, some rooms fold back in ways that can not be described on a flat map 
     // could add a Z component to track you height in the dungon
-
 
     public Room Generate(int levels = 10, int sprawl = 30)
     {

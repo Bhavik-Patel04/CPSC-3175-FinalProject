@@ -18,18 +18,13 @@ namespace StarterGame
         public Game()
         {
             _playing                = false;
+            mapGenerator            = new MapGenerator();
             _parser                 = new Parser(new CommandWords());
-
-
-
             creator                 = new CharacterCreator();
 
 
-            MapGenerator gen        = new MapGenerator();
-            Room start              = gen.Generate();
-
-
-
+            // generate map and insert player into it
+            Room start              = mapGenerator.Generate();
             _player                 = creator.createRandomPerson(); // main player 
             _player.SpawnWarp(start);
             
@@ -48,9 +43,12 @@ namespace StarterGame
                 bool finished = false;
                 while (!finished)
                 {
+
+                    creator.update(); // internal updater for players 
+
+
                     if (!_player.health.isAlive())
                     {
-
                         // draw death screen 
                         _player.ErrorMessage("You have faild...");
                         _player.WarningMessage("press any key and enter...");
@@ -59,11 +57,15 @@ namespace StarterGame
                         // retart or respawn
                         if (!_player.health.hasLives())
                         {
-                            // new game start here 
+                            // new game start here - generate new map
+                            Room start          = mapGenerator.Generate();
+                            _player             = creator.createRandomPerson();  
+                            _player.SpawnWarp(start);
                         }
                         else
                         {
                             // respawn here 
+                            mapGenerator.GetRandomRoomByLevel(0); // respawn at the bottom 
                         }
 
                     }
