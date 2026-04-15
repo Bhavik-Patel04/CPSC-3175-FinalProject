@@ -62,6 +62,14 @@ public class CharacterCreator
 
     }
 
+    // on each revolution of the parser, this updates all players/NPCs in the game 
+    public void update()
+    {
+        foreach(var kv in players)
+        {
+            kv.Value.update();
+        }
+    }
 
 
     public Player createRandomPerson(string? name = null) // default to true / shuld handle like several hundred players no problem - is overkill 

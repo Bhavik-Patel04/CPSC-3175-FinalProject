@@ -43,6 +43,8 @@ namespace StarterGame
 
             // if active player - is in a room - NPCs wont move
             // only move if not in room on update
+
+            // think aboiut bleed effects, money loss spwll, etc
         }
 
 

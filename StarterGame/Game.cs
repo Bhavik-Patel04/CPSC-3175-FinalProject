@@ -43,7 +43,7 @@ namespace StarterGame
                 bool finished = false;
                 while (!finished)
                 {
-
+                    
                     creator.update(); // internal updater for players 
 
 
