@@ -32,7 +32,7 @@ namespace StarterGame
 
             _player                 = creator.createRandomPerson(); // main player 
             _player.SpawnWarp(start);
-            _player.NormalMessage($"Ahh you have awken...{_player.name}");
+            
         }
 
 
@@ -48,6 +48,26 @@ namespace StarterGame
                 bool finished = false;
                 while (!finished)
                 {
+                    if (!_player.health.isAlive())
+                    {
+
+                        // draw death screen 
+                        _player.ErrorMessage("You have faild...");
+                        _player.WarningMessage("press any key and enter...");
+                        string ok = Console.ReadLine();
+
+                        // retart or respawn
+                        if (!_player.health.hasLives())
+                        {
+                            // new game start here 
+                        }
+                        else
+                        {
+                            // respawn here 
+                        }
+
+                    }
+                    // main controller 
                     Console.Write("\n>");
                     Command command = _parser.ParseCommand(Console.ReadLine());
                     if (command == null)
@@ -76,9 +96,23 @@ namespace StarterGame
             _player.InfoMessage(Goodbye());
         }
 
+  
+
         public string Welcome()
         {
-            return "Welcome to the World of CSU!\n\n The World of CSU is a new, incredibly boring adventure game.\n\nType 'help' if you need help." + _player.CurrentRoom.Description();
+            return $"Ahh, so you have awaken.. Drunken again, {_player.name}...\n"+
+                   "Do you not feel the Earth? Do you not hear her word?\n"+
+                   "The Mountain shakes with wrath and anger in the great distance and in the Heavens.\n" +
+                   "The paths to the Heavens are tangled with the roots of the Abyss,\n"+
+                   "Ive heard tale of passages to above, to where the olds gods covet their powers.\n" +
+                   "Forge you way through the mountain. The gods lay above.\n" +
+                   "Do not let the hunger of the deep claim your soul.\n"+
+                   "Claim your desteny with the gods... \n"+
+                   "Ye may never get another chance.\n"+
+                   "The passages to the old tunnels are shifting around you.. \n"+
+                   "as you ponder the meaning to your own questions... Go forth! "+
+                   "\n"+"\n"+
+                   _player.CurrentRoom.Description();
         }
 
         public string Goodbye()

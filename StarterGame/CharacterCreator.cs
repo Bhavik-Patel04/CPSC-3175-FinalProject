@@ -10,12 +10,12 @@ public class CharacterCreator
     "Thorin", "Doran", "Thrain", "Oin", "Bofur", "Dain", "Koth", "Sindri", "Fafnir", "Mimir",
     "Nordri", "Grendel", "Sigurd", "Odin", "Forseti", "Fenris", "Magne", "Moin", "Skuld", "Urd",
     "Bael", "Hagen", "Balin", "Ori", "Bombur", "Nain", "Magni", "Alvis", "Otur", "Galar",
-    "Sudri", "Beowulf", "Fafnir", "Vidar", "Njord", "Surtr", "Svafnir", "Graf", "Verd", "Mani",
+    "Sudri", "Beowulf", "Hagred", "Vidar", "Njord", "Surtr", "Svafnir", "Graf", "Verd", "Mani",
     "Krag", "Vorn", "Gloin", "Dori", "Fili", "Modi", "Onar", "Hreid", "Fjalar", "Gandalf",
     "Vali", "Freyr", "Ofnir", "Grabak", "Vid", "Ur", "Ver", "Mani", "Gorm", "Durin",
     "Nori", "Kili", "Ryser", "Brokk", "Ivaldi", "Austri", "Gram", "Unferth", "Hermod", "Ymir",
     "Ulf", "Bram", "Fundin", "Bifur", "Dwalin", "Dax", "Eitri", "Regin", "Alberic", "Vestri",
-    "Thror", "Hrothgar", "Tyr", "Hodur", "Baldur", "Thrud", "Goin", "Sol", "Kael", "Regin"
+    "Thror", "Hrothgar", "Tyr", "Hodur", "Baldur", "Thrud", "Goin", "Sol", "Kael", "Regin","Hagard"
 };
 
     List<string> femaleMinerNames = new List<string>
@@ -34,17 +34,23 @@ public class CharacterCreator
 
     List<string> minerLastNames = new List<string>
 {
-    "Sunforge", "Aethergrip", "Goldbrow", "Starshaft", "Lightstrider", "Highshale", "Dawnbreaker", "Skyquarry", "Cloudminer", "Halohewer",
+    "Sunforge", "Aethergrip", "Goldbrow", "Smith", "Lightstrider", "Highshale", "Dawnbreaker", "Skyquarry", "Cloudminer", "Halohewer",
     "Hellvein", "Soulbound", "Cinderheart", "Abysswalker", "Voiddigger", "Gravecoal", "Nightmantle", "Pitshaper", "Fireshield", "Demonbane",
-    "Ironfoot", "Stonecutter", "Blackwood", "Steelbound", "Hardy", "Hammerhand", "Rockbearer", "Anvilback", "Deepdwell", "Mountainborn",
-    "Gloryvein", "Saintstone", "Angelpick", "Puregold", "Brightbeam", "Solarshard", "Zenithelm", "Radiantrun", "Ethervein", "Holyhollow",
+    "Ironrock", "Stonecutter", "Blackwood", "Steelbound", "Hardy", "Hammerhand", "Rockbearer", "Anvilback", "Deepdwell", "Mountainborn",
+    "Longstone", "Saintstone", "Angelpick", "Puregold", "Brightbeam", "Solarshard", "Zenithelm", "Radiantrun", "Ethervein", "Holyhollow",
     "Shadowstitch", "Dreadmine", "Terrorgrin", "Darkdepth", "Bottomless", "Brimstone", "Sulfurbreath", "Obsidian", "Magmaflow", "Ashwalker",
-    "Earthshaker", "Coreblessed", "Gemseeker", "Oreheaver", "Tunnelking", "Cavecrawl", "Slatecraft", "Flinteye", "Gravelgut", "Dustlung",
+    "Earthshaker", "Coreblessed", "Gemseeker", "Oreheaver", "Tunnelking", "Cavecrawl", "Slatecraft", "Flinteye", "Gravelgut", "Longdust",
     "Seraphim", "Divinebit", "Celestiam", "Arkstone", "Gracefull", "Purity", "Lumina", "Aurum", "Gilded", "Resplendent",
     "Bonecrush", "Cryptic", "Underworld", "Hadesgate", "Styxwater", "Tartarus", "Infernal", "Perdition", "Damnation", "Eternal",
-    "Veinvigil", "Shaftmaster", "Lowland", "Hollowman", "Bedrock", "Tecton", "Richter", "Seismic", "Tremor", "Faultline"
+    "Veinvigil", "Shaftmaster", "Lowland", "Hollowman", "Bedrock", "Tecton", "Richter", "Seismic", "Tremor", "Coal", "Longwell"
 
 };
+
+
+
+
+
+
 
 
     private int idcount = 0;
@@ -102,10 +108,10 @@ public class CharacterCreator
 
         // DI inject health system,and other systems here 
 
-        Inventory main_inventory = new Inventory();
-        Wallet wallet = new Wallet(0, 1000);
-        HealthSystem health = new HealthSystem();
-        Player character = new Player(name, main_inventory, wallet, health, null);
+        Inventory main_inventory        = new Inventory();
+        Wallet wallet                   = new Wallet(0, 1000);
+        HealthSystem health             = new HealthSystem();
+        Player character                = new Player(name, main_inventory, wallet, health, null);
         players.Add(name, character); // spawn after creation 
         return character;
     }
