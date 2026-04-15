@@ -37,12 +37,18 @@ namespace StarterGame
 
             if (this.HasSecondWord())
             {
-                player.InfoMessage("yok we got 1 ");
+
+                // push to exicute here and - push third word down 
+
+
+
+                // this is the speak sub command ( trade, to, and fight ) 
                 if (this.HasThirdWord())
                 {
-                    player.InfoMessage("yeahhhh boiiiiiiii");
+                    player.InfoMessage("working... has third word");
+                    
                 }
-                // this would be the destination of the conversation < - then there needs to be a dialog option lol 
+               
 
                 return false;
             }
