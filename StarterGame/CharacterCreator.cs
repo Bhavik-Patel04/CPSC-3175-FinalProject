@@ -5,6 +5,7 @@ using System.Diagnostics.Metrics;
 
 public class CharacterCreator
 {
+    
     List<string> maleMinerNames = new List<string>
 {
     "Thorin", "Doran", "Thrain", "Oin", "Bofur", "Dain", "Koth", "Sindri", "Fafnir", "Mimir",
@@ -34,22 +35,22 @@ public class CharacterCreator
 
     List<string> minerLastNames = new List<string>
 {
-    "Sunforge", "Aethergrip", "Goldbrow", "Smith", "Lightstrider", "Highshale", "Dawnbreaker", "Skyquarry", "Cloudminer", "Halohewer",
-    "Hellvein", "Soulbound", "Cinderheart", "Abysswalker", "Voiddigger", "Gravecoal", "Nightmantle", "Pitshaper", "Fireshield", "Demonbane",
-    "Ironrock", "Stonecutter", "Blackwood", "Steelbound", "Hardy", "Hammerhand", "Rockbearer", "Anvilback", "Deepdwell", "Mountainborn",
-    "Longstone", "Saintstone", "Angelpick", "Puregold", "Brightbeam", "Solarshard", "Zenithelm", "Radiantrun", "Ethervein", "Holyhollow",
-    "Shadowstitch", "Dreadmine", "Terrorgrin", "Darkdepth", "Bottomless", "Brimstone", "Sulfurbreath", "Obsidian", "Magmaflow", "Ashwalker",
-    "Earthshaker", "Coreblessed", "Gemseeker", "Oreheaver", "Tunnelking", "Cavecrawl", "Slatecraft", "Flinteye", "Gravelgut", "Longdust",
-    "Seraphim", "Divinebit", "Celestiam", "Arkstone", "Gracefull", "Purity", "Lumina", "Aurum", "Gilded", "Resplendent",
-    "Bonecrush", "Cryptic", "Underworld", "Hadesgate", "Styxwater", "Tartarus", "Infernal", "Perdition", "Damnation", "Eternal",
-    "Veinvigil", "Shaftmaster", "Lowland", "Hollowman", "Bedrock", "Tecton", "Richter", "Seismic", "Tremor", "Coal", "Longwell"
+    "Aethros", "Vornhal", "Draeven", "Kaelith", "Morvain", "Tharros", "Velkyn", "Zereth", "Orvane", "Nyxar",
+    "Helior", "Vaelun", "Rathen", "Solvyr", "Mythren", "Auron", "Valeth", "Dravyn", "Karneth", "Zorvain",
+    "Eldros", "Thyrian", "Varkul", "Orren", "Maleth", "Caedryn", "Vorun", "Nerath", "Zareth", "Ulthar",
+    "Baelros", "Virel", "Thalor", "Morren", "Avarn", "Kelvyr", "Dorneth", "Yorath", "Vaelor", "Orthex",
+    "Zevran", "Karthos", "Velor", "Nyreth", "Arveth", "Droven", "Malrith", "Thorne", "Voss", "Graven",
+    "Harrow", "Duskryn", "Veylor", "Ashryn", "Morveth", "Krevos", "Zalthor", "Orvain", "Velmorn", "Threx",
+    "Drathen", "Vaul", "Korveth", "Nyros", "Zerath", "Aldren", "Vorath", "Kelros", "Thyros", "Moros",
+    "Varn", "Eryndor", "Ulric", "Draeth", "Kaelor", "Vireth", "Zorin", "Malvor", "Ordrin", "Thalryn",
+    "Vaelros", "Krynn", "Zerros", "Morvain", "Aethryn", "Velros", "Draemor", "Nyvar", "Korren", "Zalthyn"
 
 };
 
 
 
 
-
+    
 
 
 
@@ -72,7 +73,7 @@ public class CharacterCreator
     }
 
 
-    public Player createRandomPerson(string? name = null) // default to true / shuld handle like several hundred players no problem - is overkill 
+    public Player createRandomPerson(string? name = null) // this is about 9,801(x2) per gender /  19,602 total combinations  99x99
     {
 
         // name generator - loops until met
