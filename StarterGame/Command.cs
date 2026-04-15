@@ -23,6 +23,7 @@ namespace StarterGame
         {
             this.Name = "";
             this.SecondWord = null;
+            this.ThirdWord = null;
         }
 
         public bool HasSecondWord()

@@ -19,7 +19,7 @@ namespace StarterGame
             
             // this shouldnt be here but it works 
             List<string> players_ = player.CurrentRoom.OccupancyToList(player);
-            if (players_.Count > 0)
+            if (players_.Count > 1)
             {
                 player.InfoMessage("players in room:");
                 for (int i = 0; i < players_.Count; i++)
@@ -37,7 +37,11 @@ namespace StarterGame
 
             if (this.HasSecondWord())
             {
-                
+                player.InfoMessage("yok we got 1 ");
+                if (this.HasThirdWord())
+                {
+                    player.InfoMessage("yeahhhh boiiiiiiii");
+                }
                 // this would be the destination of the conversation < - then there needs to be a dialog option lol 
 
                 return false;

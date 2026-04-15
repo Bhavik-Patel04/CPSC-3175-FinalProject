@@ -33,7 +33,7 @@ namespace StarterGame
                 {
                     
 
-                    if (words.Length > 1 && words.Length < 3)
+                    if (words.Length > 1 )
                     {
                         command.SecondWord = words[1];
                     }
@@ -42,7 +42,7 @@ namespace StarterGame
                         command.SecondWord = null;
                     }
 
-                    if (words.Length >= 3)
+                    if (words.Length >2 )
                     {
                         command.ThirdWord = words[2];
                     }
