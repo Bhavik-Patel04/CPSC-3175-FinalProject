@@ -18,7 +18,6 @@ namespace StarterGame
         public Game()
         {
             _playing                = false;
-            mapGenerator            = new MapGenerator();
             _parser                 = new Parser(new CommandWords());
             creator                 = new CharacterCreator();
 
