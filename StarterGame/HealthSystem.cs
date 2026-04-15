@@ -40,10 +40,12 @@ public class HealthSystem
         return maxHealth;
     }
 
+
     public void addLives(int amt)
     {
         lives_ammount += amt;
     }
+
 
     public bool useLife()
     {
@@ -55,6 +57,7 @@ public class HealthSystem
         return false;
     }
 
+
     public bool hasLives()
     {
         if (lives_ammount > 0)
@@ -64,6 +67,13 @@ public class HealthSystem
         return false;
     }
 
+
+    public void respawn()
+    {
+        health_ammount = maxHealth;
+    }
+
+
     public bool isAlive()
     {
         if (health_ammount >0)
@@ -72,6 +82,7 @@ public class HealthSystem
         }
         return false;
     }
+
 
 	public void Hit(int decriment_ammount)
 	{
@@ -84,6 +95,7 @@ public class HealthSystem
             health_ammount = 0; 
         }
 	}
+
 
     public void reginerate(int incriment_ammount)
     {
@@ -98,7 +110,7 @@ public class HealthSystem
     }
 
 
-    // Helper functions 
+    // Helper functions - time based effects 
     private void bleed()
     {
         if (bleed_effect)
@@ -114,6 +126,7 @@ public class HealthSystem
             }
         }
     }
+    
 
     private void potion()
     {

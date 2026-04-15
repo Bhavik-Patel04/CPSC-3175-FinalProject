@@ -60,7 +60,7 @@ namespace StarterGame
 
 
 
-        public void WaltTo(string direction)
+        public void goTo(string direction)
         {
             Room nextRoom = CurrentRoom.GetExit(direction);
             if (nextRoom != null)

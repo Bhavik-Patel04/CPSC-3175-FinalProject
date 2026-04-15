@@ -48,8 +48,8 @@ namespace StarterGame
                     // death and restart screen 
                     if (!_player.health.isAlive())
                     {
-                        _player.ErrorMessage("You have faild...");
-                        _player.WarningMessage("press any key and enter...");
+                        _player.ErrorMessage("You have faild to reclaim yourself...");
+                        _player.WarningMessage("press enter...");
                         string ok = Console.ReadLine();
 
                         // retart or respawn
@@ -62,8 +62,8 @@ namespace StarterGame
                         }
                         else
                         {
-                            // respawn here 
                             mapGenerator.GetRandomRoomByLevel(0);   // respawn at the bottom 
+                            _player.health.respawn();               // respawn health to max health 
                         }
                     }
 
