@@ -37,7 +37,8 @@ namespace StarterGame
                     {
                         if (p2.SpeakCommands.ContainsKey(this.SecondWord))
                         {
-                            string? response = p2.SpeakCommands[this.SecondWord].Execute(player);
+                            
+                            string? response = p2.SpeakCommands[this.SecondWord].Execute(player,p2);
                         }
                     }
                 }

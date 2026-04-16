@@ -3,5 +3,6 @@ using System;
 
 public interface Speak
 {
-    public string Execute(Player p1);
+    public string keyword {get;}
+    public string Execute(Player p1, Player p2);
 }

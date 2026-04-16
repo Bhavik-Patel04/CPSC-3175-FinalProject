@@ -22,7 +22,7 @@ public class DialogCreator
                 "Another word and you’ll regret it.",
                 "Don’t test me.",
                 "You looking for a fight, begon!",
-            }
+            },
             ["theft"] = new List<string>()
             {
                 "Didn’t even feel that, did you?",
@@ -44,7 +44,7 @@ public class DialogCreator
                 "Gold is the only price for my items...",
                 "Ye who walk alone, do ye need previsions?..."
                
-            }
+            },
             ["thanks"] = new List<string>()
             {
                 "May the gods favor your journy...",
@@ -94,7 +94,7 @@ public class DialogCreator
                 "The gods see you... They know your character...",
                 ".. * mumble *.. * mumble *.. chanting..",
                 "Wicked is the world..."
-            }
+            },
             ["theft"] = new List<string>()
             {
                 "Didn’t even feel that, did you?",
@@ -116,7 +116,7 @@ public class DialogCreator
                 "The tunnels shift again.",
                 "Stay sharp.",
                 "Not many make it this far."
-            }
+            },
             ["trade"] = new List<string>()
             {
                 "Coin first. Words later.",
@@ -154,12 +154,17 @@ public class DialogCreator
 	}
 
 
-    public void MakeDialogSet(string character_type)
+
+
+
+    public Speak MakeDialogSet(string character_type)
     {
         if (character_type == "beggar")
         {
-            return dialog["beggar"]
+           
+            return new SpeakTo(dialog["beggar"]);
         }
+        return new SpeakTo(dialog["neutral"]);
     }
 
 

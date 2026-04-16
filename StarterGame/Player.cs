@@ -26,11 +26,11 @@ namespace StarterGame
         public HealthSystem      health ;
 
 
-        public Dictionary<string,Speak> SpeakCommands = new Dictionary<string,Speak>();
+        public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>(); 
 
 
         public string name {  get; init; }
-        public Player(string name, string Type, Inventory I_,Wallet W_, HealthSystem H_, Room room )
+        public Player(string name, string Type, Speak dialog, Inventory I_,Wallet W_, HealthSystem H_, Room room )
         {
             this.main_inventory = I_;
             this.wallet         = W_;
@@ -38,6 +38,7 @@ namespace StarterGame
             this._currentRoom   = room;
             this.name           = name;
             this.Type           = Type;
+            AddSpeakCommand(dialog);
         }
 
 
@@ -55,7 +56,10 @@ namespace StarterGame
             wallet.update();
         }
 
-
+        public void AddSpeakCommand(Speak cmd)
+        {
+            SpeakCommands.Add(cmd.keyword, cmd);
+        }
 
         public List<string> GetInfo()
         {

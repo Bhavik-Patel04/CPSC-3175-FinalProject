@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Reflection.Metadata;
 
 public class CharacterCreator
 {
@@ -48,20 +49,16 @@ public class CharacterCreator
 };
 
 
+    private int idcount                             = 0;
+    private Dictionary<string, Player> players      = new Dictionary<string, Player>();
+    private Random rand                             = new Random();
+    private DialogCreator dialogCreator             = new DialogCreator();
 
 
 
 
 
 
-    private int idcount = 0;
-    private Dictionary<string, Player> players = new Dictionary<string, Player>();
-    private Random rand = new Random();
-    public CharacterCreator()
-    {
-
-
-    }
 
     // on each revolution of the parser, this updates all players/NPCs in the game 
     public void update()
@@ -75,10 +72,7 @@ public class CharacterCreator
 
 
 
-    public void creatDialog(string type )
-    {
-
-    }
+ 
 
 
     public Player createRandomPerson(string? name = null, string? type = "user") // this is about 9,801(x2) per gender /  19,602 total combinations  99x99
@@ -129,17 +123,26 @@ public class CharacterCreator
         Wallet wallet                   = new Wallet(0, 1000);
         HealthSystem health             = new HealthSystem();
 
-        
+
 
         // speak commands go here 
 
 
         // do commands go here 
 
+        Speak dialog = dialogCreator.MakeDialogSet(type);
 
 
-        Player character                = new Player(name, type , main_inventory, wallet, health, null);
-
+        Player character                = new Player(
+                                                        name,           // Character name 
+                                                        type,           // type of player ( used for NPCs and targeting)
+                                                        dialog,         // custom dialog prompts 
+                                                        main_inventory, // internal system 
+                                                        wallet,         // internal system 
+                                                        health,         // internal system
+                                                        null            // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                     );
+        
         players.Add(name, character); // spawn after creation 
         return character;
     }
