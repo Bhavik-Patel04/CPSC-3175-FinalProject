@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class DialogCreator
 {
 
-	Dictionary<string,Dictionary<string,string>> dialog = new Dictionary<string,Dictionary<string,string>>();
 
     var dialog = new Dictionary<string, Dictionary<string, List<string>>>()
     {
