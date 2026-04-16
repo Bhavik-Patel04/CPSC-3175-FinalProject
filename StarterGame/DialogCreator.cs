@@ -5,7 +5,7 @@ public class DialogCreator
 {
 
 
-    var dialog = new Dictionary<string, Dictionary<string, List<string>>>()
+    private Dictionary<string, Dictionary<string, List<string>>> dialog = new Dictionary<string, Dictionary<string, List<string>>>()
     {
         ["hostile"] = new Dictionary<string, List<string>>()
         {
@@ -21,12 +21,44 @@ public class DialogCreator
                 "I’m not the one to beg from.",
                 "Another word and you’ll regret it.",
                 "Don’t test me.",
+                "You looking for a fight, begon!",
             }
+            ["theft"] = new List<string>()
+            {
+                "Didn’t even feel that, did you?",
+                "Check your pockets.",
+                "Too slow.",
+                "Eyes up next time.",
+                "Easy mark."
+            }
+        },
+
+        ["merchant"] = new Dictionary<string, List<string>>()
+        {
+            ["generic"] = new List<string>()
+            {
+                "I have items, if you have coin...",
+                "Psst.. I havesomthing for you...",
+                "I have goods if you have the gold for it...",
+                "Will trade for gold...",
+                "Gold is the only price for my items...",
+                "Ye who walk alone, do ye need previsions?..."
+               
+            }
+            ["thanks"] = new List<string>()
+            {
+                "May the gods favor your journy...",
+                "Thank you.. Please do business with me again.",
+                "May the stone shelter you and weather you from the storm of the gods",
+                "Appricate the gold",
+                "Anything else?...",
+            },
+
         },
 
         ["beggar"] = new Dictionary<string, List<string>>()
         {
-            ["ask_gold"] = new List<string>()
+            ["generic"] = new List<string>()
             {
                 "Spare a bit of coin?",
                 "I’ve nothing left… help me.",
@@ -38,7 +70,7 @@ public class DialogCreator
                 "I’ve walked too far to die here.",
                 "Anything… I’ll take anything.",
                 "Help me endure a little longer."
-            }
+            },
 
             ["thanks"] = new List<string>()
             {
@@ -51,13 +83,27 @@ public class DialogCreator
                 "Then leave me to rot…",
                 "You’re no better than the rest.",
                 "Cold… all of you."
-            }
-             ["notenough"] = new List<string>()
+            },
+            ["notenough"] = new List<string>()
             {
                 "Would you like it back, you seem to not be doing so well youself…",
                 "You’re no better than the others",
                 "Cold… all of you.",
-                "I curse you for this..."
+                "I curse you for this...",
+                "What am I to do with this, piss on it...",
+                "The gods see you... They know your character...",
+                ".. * mumble *.. * mumble *.. chanting..",
+                "Wicked is the world..."
+            }
+            ["theft"] = new List<string>()
+            {
+                "Didn’t even feel that, did you?",
+                "Check your pockets...",
+                "Too slow!, Keep up!",
+                "Eyes up next time, sucker!",
+                "Easy mark!",
+                "Better luck nextime...",
+                "Got it..."
             }
         },
 
@@ -71,6 +117,13 @@ public class DialogCreator
                 "Stay sharp.",
                 "Not many make it this far."
             }
+            ["trade"] = new List<string>()
+            {
+                "Coin first. Words later.",
+                "Everything has a price.",
+                "No coin, no answer.",
+                "Your need is my profit."
+            }
         },
 
         ["cryptic"] = new Dictionary<string, List<string>>()
@@ -83,33 +136,13 @@ public class DialogCreator
                 "The stone listens.",
                 "Light fades quickly here.",
                 "Look up.. On occasion..",
-                "Do you feel the rumbling in the stone.."
+                "Do you feel the rumbling in the stone..",
+                "Ahead my son..."
             }
         },
 
-        ["greedy"] = new Dictionary<string, List<string>>()
-        {
-            ["trade"] = new List<string>()
-            {
-                "Coin first. Words later.",
-                "Everything has a price.",
-                "Pay, or move along.",
-                "No coin, no answer.",
-                "Your need is my profit."
-            }
-        },
 
-        ["thief"] = new Dictionary<string, List<string>>()
-        {
-            ["taunt"] = new List<string>()
-            {
-                "Didn’t even feel that, did you?",
-                "Check your pockets.",
-                "Too slow.",
-                "Eyes up next time.",
-                "Easy mark."
-            }
-        }
+       
     };
 
 
@@ -121,9 +154,12 @@ public class DialogCreator
 	}
 
 
-    public void MakeDialogSet()
+    public void MakeDialogSet(string character_type)
     {
-
+        if (character_type == "beggar")
+        {
+            return dialog["beggar"]
+        }
     }
 
 

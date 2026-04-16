@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Runtime.InteropServices;
 using System.Data;
+using System.Linq;
 
 namespace StarterGame
 {
@@ -36,6 +37,7 @@ namespace StarterGame
             this.health         = H_; 
             this._currentRoom   = room;
             this.name           = name;
+            this.Type           = Type;
         }
 
 
@@ -55,7 +57,13 @@ namespace StarterGame
 
 
 
-
+        public List<string> GetInfo()
+        {
+            var info = new List<string>();
+            info.Add(name); 
+            info.Add(Type);
+            return info;
+        }
 
 
         public void SpawnWarp(Room room) // push to room 

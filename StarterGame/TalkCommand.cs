@@ -19,8 +19,8 @@ namespace StarterGame
         {
             
             
-            List<string> players_ = player.CurrentRoom.OccupancyToList(); // defently a hack lol
-            if (players_.Count < 2){
+            int count_ = player.CurrentRoom.GetOccupancyCount(); // defently a hack lol
+            if (count_ < 2){
                 player.InfoMessage("Talking to yourself is a sure sign of madness, these caverns are listening...");
             }
 

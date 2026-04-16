@@ -53,7 +53,7 @@ public class MapGenerator
         {
             
             // roll for type 
-            int roll = rand.Next(0, 2);
+            int roll = rand.Next(0, 4);
             string type = "person";             // travelers
             switch (roll)
             {
@@ -61,6 +61,9 @@ public class MapGenerator
                         break;
                 case 2: type    = "merchant";   // go to towns 
                         break;
+                case 3:
+                    type        = "drunk";      // go to towns / taverns
+                    break;
             }
 
             Room? spawn_location    = GetNPCspawnLocations(type); // will spawn anywhere on the map that isnt a boss room 
@@ -92,7 +95,10 @@ public class MapGenerator
 
             case "merchant":
                 return RollForTowns();
-                
+
+            case "drunk":
+                return RollForTowns();
+
         } return RollForTownOutskits();
     }
 

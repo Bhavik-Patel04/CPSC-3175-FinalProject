@@ -74,14 +74,11 @@ namespace StarterGame
         }
 
 
-        public List<string> OccupancyToList()
+
+
+        public int GetOccupancyCount()
         {
-            List<string> list_ = new List<string>();
-            foreach (var kv in players_in_room)
-            {
-                list_.Add(kv.Key);
-            }
-            return list_;
+            return players_in_room.Count;
         }
 
 
@@ -121,19 +118,34 @@ namespace StarterGame
         }
 
 
+
+        public List<List<string>> OccupancyToList()
+        {
+            List<List<string>> infolist = new List<List<string>>();
+
+            foreach (var kv in players_in_room)
+            {
+
+                infolist.Add(kv.Value.GetInfo());
+
+            }
+            return infolist;
+        }
+
+
         public string GetNearByPlayers(string name)
         {
-            List<string> occupancylist = OccupancyToList();
+            List<List<string>> occupancylist = OccupancyToList();
             string list_ = "";
             if (occupancylist.Count > 1)
             {
                 list_ += "Near by:\n";
             }
-            foreach (var person in occupancylist)
+            foreach (List<string> index in occupancylist)
             {
-                if (person != name)
+                if (index[0] != name)
                 {
-                    list_ += $"\n{person}";
+                    list_ += $"\n{index[0]} : {index[1]}";
                 }
             }
             return list_;

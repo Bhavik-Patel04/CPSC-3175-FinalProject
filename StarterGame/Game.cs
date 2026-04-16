@@ -69,12 +69,26 @@ namespace StarterGame
                         }
                     }
 
+                    // make these a plug in 
 
+                    // wallet and health stats 
                     _player.WarningMessage($"\n Health: {_player.health.GetHealthStatus()} ");
                     _player.WarningMessage($"\n Gold: {_player.wallet.GetGoldInWallet()} ");
-                    _player.WarningMessage($"\n ---------------------------------------------------- ");
-                    _player.NormalMessage("\n" + _player.CurrentRoom.GetNearByPlayers(_player.name));
+
+
+                    // plugin for nearby players 
+                    string nearby = _player.CurrentRoom.GetNearByPlayers(_player.name);
+                    if (nearby != "")
+                    {
+                        _player.WarningMessage($"\n ---------------------------------------------------- ");
+                        _player.NormalMessage("\n" + _player.CurrentRoom.GetNearByPlayers(_player.name));
+                        _player.WarningMessage($"\n ---------------------------------------------------- ");
+                    }
+
+                    // room description 
                     _player.NormalMessage("\n" + _player.CurrentRoom.Description());
+                    
+                    
                     
                     Console.Write("\n>");
                     Command command = _parser.ParseCommand(Console.ReadLine());
