@@ -1,6 +1,7 @@
-﻿using System;
+﻿using StarterGame;
+using System;
 
 public interface Speak
 {
-    public void Execute();
+    public string Execute(Player p1);
 }

@@ -5,7 +5,7 @@ using System.Diagnostics.Metrics;
 
 public class CharacterCreator
 {
-    
+
     List<string> maleMinerNames = new List<string>
 {
     "Thorin", "Doran", "Thrain", "Oin", "Bofur", "Dain", "Koth", "Sindri", "Fafnir", "Mimir",
@@ -50,7 +50,7 @@ public class CharacterCreator
 
 
 
-    
+
 
 
 
@@ -66,14 +66,22 @@ public class CharacterCreator
     // on each revolution of the parser, this updates all players/NPCs in the game 
     public void update()
     {
-        foreach(var kv in players)
+        foreach (var kv in players)
         {
             kv.Value.update();
         }
     }
 
 
-    public Player createRandomPerson(string? name = null) // this is about 9,801(x2) per gender /  19,602 total combinations  99x99
+
+
+    public void creatDialog(string type )
+    {
+
+    }
+
+
+    public Player createRandomPerson(string? name = null, string? type = "user") // this is about 9,801(x2) per gender /  19,602 total combinations  99x99
     {
 
         // name generator - loops until met
@@ -120,7 +128,18 @@ public class CharacterCreator
         Inventory main_inventory        = new Inventory();
         Wallet wallet                   = new Wallet(0, 1000);
         HealthSystem health             = new HealthSystem();
-        Player character                = new Player(name, main_inventory, wallet, health, null);
+
+        
+
+        // speak commands go here 
+
+
+        // do commands go here 
+
+
+
+        Player character                = new Player(name, type , main_inventory, wallet, health, null);
+
         players.Add(name, character); // spawn after creation 
         return character;
     }

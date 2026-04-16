@@ -18,14 +18,18 @@ namespace StarterGame
         private Room             _currentRoom = null;
         public Room              CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
-
+        private string Type { get; init; }
 
         public Inventory         main_inventory; // move this to a maker 
         public Wallet            wallet;
         public HealthSystem      health ;
 
+
+        public Dictionary<string,Speak> SpeakCommands = new Dictionary<string,Speak>();
+
+
         public string name {  get; init; }
-        public Player(string name, Inventory I_,Wallet W_, HealthSystem H_, Room room)
+        public Player(string name, string Type, Inventory I_,Wallet W_, HealthSystem H_, Room room )
         {
             this.main_inventory = I_;
             this.wallet         = W_;
@@ -45,7 +49,13 @@ namespace StarterGame
             // only move if not in room on update
 
             // think aboiut bleed effects, money loss spwll, etc
+            health.update();
+            wallet.update();
         }
+
+
+
+
 
 
         public void SpawnWarp(Room room) // push to room 
@@ -54,8 +64,15 @@ namespace StarterGame
             {
                 CurrentRoom.PlayerHasLeftRoom(this); // leave old room
             }
-            room.PlayerHasEnteredRoom(this); // enter next 
-            this._currentRoom = room;        // set the ref 
+            if (room != null)
+            {
+                room.PlayerHasEnteredRoom(this); // enter next 
+                this._currentRoom = room;        // set the ref 
+            }
+            else
+            {
+                Console.WriteLine($"spawn broken yo { this.name}");
+            }
         }
 
 

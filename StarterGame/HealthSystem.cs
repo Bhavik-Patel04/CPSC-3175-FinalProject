@@ -7,7 +7,7 @@ public class HealthSystem
 	private int health_ammount          = 100;
     private int lives_ammount           = 2;
 
-    private bool bleed_effect           = false;    // bleed effects - bleed out over time 
+    private bool bleed_effect           = false;    // bleed effects - bleed out over time    // room or action event 
     private int bleed_effect_time       = 0;
     private int bleed_effect_maxTime    = 5;
     private int bleed_effect_amt        = 1;
@@ -25,8 +25,6 @@ public class HealthSystem
 
 
 
-
-
     public void update()
     {
         bleed();
@@ -34,6 +32,10 @@ public class HealthSystem
     }
 
 
+    public string GetHealthStatus()
+    {
+        return health_ammount.ToString();
+    }
 
 
     public int SetMaxHealth(int amount)

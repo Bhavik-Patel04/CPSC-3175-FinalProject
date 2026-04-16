@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 
 namespace StarterGame
 {
@@ -63,8 +64,17 @@ namespace StarterGame
         }
 
 
+        public Player? FindPlayerInRoom(string id) // new / communications /actions
+        {
+            if (players_in_room.ContainsKey(id))
+            {
+                return players_in_room[id];
+            }
+            return null;
+        }
 
-        public List<string> OccupancyToList(Player player_ )
+
+        public List<string> OccupancyToList()
         {
             List<string> list_ = new List<string>();
             foreach (var kv in players_in_room)
@@ -99,9 +109,40 @@ namespace StarterGame
             return exitNames;
         }
 
+        public List<Room> GetExitsRoomList()
+        {
+            List<Room> out_ = new List<Room>();
+            foreach (var(k,v) in _exits)
+            {
+                out_.Add(v);
+            }
+
+            return out_;
+        }
+
+
+        public string GetNearByPlayers(string name)
+        {
+            List<string> occupancylist = OccupancyToList();
+            string list_ = "";
+            if (occupancylist.Count > 1)
+            {
+                list_ += "Near by:\n";
+            }
+            foreach (var person in occupancylist)
+            {
+                if (person != name)
+                {
+                    list_ += $"\n{person}";
+                }
+            }
+            return list_;
+        }
+
+
         public string Description()
         {
-            return "You are " + Conjunction + " " + Tag + " :: "+ type + ".\n *** " + this.GetExits();
+            return "You are " + Conjunction + " " + Tag + " :: "+ type + ".\n *** " + this.GetExits() ;
         }
     }
 }

@@ -17,10 +17,12 @@ namespace StarterGame
         private CharacterCreator    creator;
         public Game()
         {
+            
             _playing                = false;
-            mapGenerator            = new MapGenerator();
-            _parser                 = new Parser(new CommandWords());
             creator                 = new CharacterCreator();
+            mapGenerator            = new MapGenerator(creator);
+            _parser                 = new Parser(new CommandWords());
+            
 
 
             // generate map and insert player into it
@@ -68,9 +70,12 @@ namespace StarterGame
                     }
 
 
-
-                    // main controller 
+                    _player.WarningMessage($"\n Health: {_player.health.GetHealthStatus()} ");
+                    _player.WarningMessage($"\n Gold: {_player.wallet.GetGoldInWallet()} ");
+                    _player.WarningMessage($"\n ---------------------------------------------------- ");
+                    _player.NormalMessage("\n" + _player.CurrentRoom.GetNearByPlayers(_player.name));
                     _player.NormalMessage("\n" + _player.CurrentRoom.Description());
+                    
                     Console.Write("\n>");
                     Command command = _parser.ParseCommand(Console.ReadLine());
                     Console.Clear();

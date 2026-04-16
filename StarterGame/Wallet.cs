@@ -16,6 +16,18 @@ public class Wallet
 
     }
 
+    // spells that make you loose gold here 
+    public void update()
+    {
+
+    }
+
+
+    public string GetGoldInWallet()
+    {
+        return gold.ToString();
+    }
+
     public bool AddGold(int amount)
     {
         if (gold + amount > Capacity)
