@@ -51,7 +51,7 @@ namespace StarterGame
         }
 
 
-        // entered room and etix room notification 
+        // entered room and exit room notification 
         public void PlayerHasEnteredRoom(Player player_)
         {
             players_in_room.Add(player_.name, player_);
