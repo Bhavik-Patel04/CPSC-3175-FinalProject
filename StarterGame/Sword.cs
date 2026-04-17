@@ -12,6 +12,6 @@ public class Sword:Item
     public string type { get; init; } = string.Empty;
     public bool OnlyOneFlag { get; init; } = true;
     public double price { get; init; } = 100;
-
+    public bool Equippable { get; init; } = true;
     public bool forSale { get; set; }
 }

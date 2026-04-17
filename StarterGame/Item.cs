@@ -11,7 +11,7 @@ public interface Item  // add description
 	public double price { get; init; }
 
     public bool OnlyOneFlag { get; init; }
-
+    public bool Equippable { get; init; }
     public bool forSale { get; set; }
 
 }

@@ -6,11 +6,88 @@ using System.ComponentModel.Design;
 public class Inventory : IInventory
 {
 
-    private Dictionary<string, Item> pocket = new Dictionary<string, Item>(); // make that 
-    private int Capacity                = 100;
+    private Dictionary<string, Item> pocket = new Dictionary<string, Item>();   
+    private Dictionary<string, Item> equpment = new Dictionary<string, Item>();
+    private int Capacity                = 100;      // capacity cap
     private double Weight_onboard       = 0.00;
-    private double Weight_cap           = 75.00;
+    private double Weight_cap           = 75.00;    // pocket weight limit
     private int Capacity_onboard        = 0;
+    private double Equipment_onboard    = 0;
+    private int Equipment_cap           = 25;       // 100 pound carry limit
+
+   // ABSOLUTE LIMITS
+   private double MAX_WEIGHT = 150;
+   private double MAX_EQIPMENT_WEIGHT = 50;
+
+
+    //-------------------------------------------------------------------------------------------------------
+    // Settings for weight
+    //-------------------------------------------------------------------------------------------------------
+
+
+    private bool RaiseInventoryWeightCap(int ammount)
+    {
+        if (Weight_cap + ammount <= MAX_WEIGHT)
+        {
+            Weight_cap += ammount;
+            return true;
+        }
+        return false;
+
+    }
+
+    private bool RaiseEquipmentWeightCap(int ammount)
+    {
+        if (Equipment_cap + ammount <= MAX_EQIPMENT_WEIGHT)
+        {
+            Equipment_cap += ammount;
+            return true;
+        }
+        return false;
+
+    }
+
+
+    //-------------------------------------------------------------------------------------------------------
+    // Equipment attachment
+    //-------------------------------------------------------------------------------------------------------
+
+    public bool Equip(Item item)
+    {
+        string tmp = item.id;
+        if (item.Equippable && item.OnlyOneFlag)
+        {
+            if (!equpment.ContainsKey(item.id))
+            {
+                if (Equipment_onboard + item.mass <= Equipment_onboard)
+                {
+                    Equipment_onboard += item.mass;
+                    DelItem(tmp, 1);
+                    equpment.Add(tmp, item);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public bool Unequip(string id)
+    {
+        if (equpment.ContainsKey(id))
+        {
+            Item tmp = equpment[id];
+            equpment.Remove(id);
+            AddItem(tmp);
+            return true;
+
+        }
+        return false;
+    }
+
+
+    //-------------------------------------------------------------------------------------------------------
+    // Sell, trade, use items 
+    //-------------------------------------------------------------------------------------------------------
 
 
 
@@ -57,6 +134,10 @@ public class Inventory : IInventory
         }
     }
 
+
+    //-------------------------------------------------------------------------------------------------------
+    // Inventory managment
+    //-------------------------------------------------------------------------------------------------------
 
 
     public bool AddItem(Item item)
@@ -106,7 +187,7 @@ public class Inventory : IInventory
     {
         if (pocket.ContainsKey(id))
         {
-
+            return 0;
         }
         if (ammount < pocket[id].numberOf) // clamp
         {
