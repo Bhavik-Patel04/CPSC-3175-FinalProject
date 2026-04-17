@@ -14,6 +14,20 @@ public class Inventory : IInventory
 
 
 
+    public List<Item> getAllItemsMarkedForSale()
+    {
+        List<Item> __ = new List<Item>();
+        foreach (var (k, v) in pocket)
+        {
+            if (v.forSale == true)
+            {
+                __.Add(v);
+            }
+        }
+       return __;
+    }
+
+
 
     public Item? getItem(string id)
     {
@@ -37,7 +51,7 @@ public class Inventory : IInventory
                 // get properties 
                 // send them to a thing to use it 
 
-                int amt_used = DelItem(item,ammount);
+                int amt_used = DelItem(id,ammount);
                 
             }
         }
@@ -52,15 +66,19 @@ public class Inventory : IInventory
         {
             double item_mass = (item.numberOf * item.mass);
             // check if adding it makes us over weight...
-            if ((item_mass + Weight_onboard) <= Weight_cap)
-            {
-                if (Capacity_onboard + item.numberOf <= Capacity)
-                {
-                    Capacity_onboard         += item.numberOf;  // capacity
-                    Weight_onboard           += item_mass;     // add up mass
-                    pocket[item.id].numberOf += item.numberOf; // add
 
-                    return true;
+            if (!item.OnlyOneFlag)
+            {
+                if ((item_mass + Weight_onboard) <= Weight_cap)
+                {
+                    if (Capacity_onboard + item.numberOf <= Capacity)
+                    {
+                        Capacity_onboard += item.numberOf;  // capacity
+                        Weight_onboard += item_mass;     // add up mass
+                        pocket[item.id].numberOf += item.numberOf; // add
+
+                        return true;
+                    }
                 }
             }
         }
@@ -84,25 +102,28 @@ public class Inventory : IInventory
 
 
 
-    public int DelItem(Item item, int ammount)
+    public int DelItem(string id, int ammount)
     {
-        if (ammount < item.numberOf) // clamp
+        if (pocket.ContainsKey(id))
+        {
+
+        }
+        if (ammount < pocket[id].numberOf) // clamp
         {
             Capacity_onboard    -= ammount;
-            Weight_onboard      -= (ammount * item.mass);
-            item.numberOf       -= ammount;
+            Weight_onboard      -= (ammount * pocket[id].mass);
+            pocket[id].numberOf       -= ammount;
             return ammount;
         }
         else
         {
             // create persitant tracking
-            string temp_id          = item.id;
+            
             int temp_actualAmmount  = 0;
-
-            temp_actualAmmount   = item.numberOf;
-            Capacity_onboard    -= item.numberOf;
-            Weight_onboard      -= (item.numberOf) * item.mass;
-            pocket.Remove(temp_id);
+            temp_actualAmmount   = pocket[id].numberOf;
+            Capacity_onboard    -= pocket[id].numberOf;
+            Weight_onboard      -= (pocket[id].numberOf) * pocket[id].mass;
+            pocket.Remove(id);
             return temp_actualAmmount;
 
         }

@@ -26,12 +26,12 @@ namespace StarterGame
                         player.CurrentRoom.Actions[this.SecondWord].Execute();
                         return false;
                     }
-                    player.WarningMessage($"\nYou shall not do '{this.SecondWord}' in this location... ");
+                    player.messenger.WarningMessage($"\nYou shall not do '{this.SecondWord}' in this location... ");
                 }
             }
             else
             {
-                player.WarningMessage("\nDo what?");
+                player.messenger.WarningMessage("\nDo what?");
             }
             return false;
         }

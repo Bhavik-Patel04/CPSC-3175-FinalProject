@@ -7,33 +7,7 @@ public class DialogCreator
 
     private Dictionary<string, Dictionary<string, List<string>>> dialog = new Dictionary<string, Dictionary<string, List<string>>>()
     {
-        ["hostile"] = new Dictionary<string, List<string>>()
-        {
-            ["generic"] = new List<string>()
-            {
-                "Out of my way.",
-                "Piss off, wretch.",
-                "Keep your distance.",
-                "You're not worth the breath.",
-                "Try me, and see how it ends.",
-                "I've buried better than you.",
-                "Walk away while you still can.",
-                "I’m not the one to beg from.",
-                "Another word and you’ll regret it.",
-                "Don’t test me.",
-                "You looking for a fight, begon!",
-            },
-            ["theft"] = new List<string>()
-            {
-                "Didn’t even feel that, did you?",
-                "Check your pockets.",
-                "Too slow.",
-                "Eyes up next time.",
-                "Easy mark."
-            }
 
-
-        },
 
         ["merchant"] = new Dictionary<string, List<string>>()
         {
@@ -47,14 +21,26 @@ public class DialogCreator
                 "Ye who walk alone, do ye need previsions?..."
                
             },
+            ["trade"] = new List<string>()
+            {
+                "Yes, spend, spend , buy ,buy..",
+                "See anything you like?",
+                "You may need that...",
+                "I have the best goods on the market!",
+                "Anything?",
+                "Pick your poison..."
+            },
+            ["notrade"] = new List<string>()
+            {
+                "Try again later, im fresh out...",
+                "Business has been good.. but not for you..."
+            },
             ["thanks"] = new List<string>()
             {
-                "May the gods favor your journy...",
-                "Thank you.. Please do business with me again.",
-                "May the stone shelter you and weather you from the storm of the gods",
-                "Appricate the gold",
-                "Anything else?...",
-            },
+                "Come again...",
+                "Thank You for you business...",
+                "May the stone shelter you from the gods..."
+            }
 
         },
 
@@ -80,33 +66,7 @@ public class DialogCreator
                 "I won’t forget you charity",
                 "May the stone shelter you and weather you from the storm of the gods"
             },
-            ["rejected"] = new List<string>()
-            {
-                "Then leave me to rot…",
-                "You’re no better than the rest.",
-                "Cold… all of you."
-            },
-            ["notenough"] = new List<string>()
-            {
-                "Would you like it back, you seem to not be doing so well youself…",
-                "You’re no better than the others",
-                "Cold… all of you.",
-                "I curse you for this...",
-                "What am I to do with this, piss on it...",
-                "The gods see you... They know your character...",
-                ".. * mumble *.. * mumble *.. chanting..",
-                "Wicked is the world..."
-            },
-            ["theft"] = new List<string>()
-            {
-                "Didn’t even feel that, did you?",
-                "Check your pockets...",
-                "Too slow!, Keep up!",
-                "Eyes up next time, sucker!",
-                "Easy mark!",
-                "Better luck nextime...",
-                "Got it..."
-            }
+            
         },
 
         ["neutral"] = new Dictionary<string, List<string>>()
@@ -125,22 +85,16 @@ public class DialogCreator
                 "Everything has a price.",
                 "No coin, no answer.",
                 "Your need is my profit."
-            }
-        },
-
-        ["cryptic"] = new Dictionary<string, List<string>>()
-        {
-            ["warning"] = new List<string>()
+            },
+             ["notrade"] = new List<string>()
             {
-                "The deep remembers.",
-                "Not all paths lead upward.",
-                "You’ve been marked.",
-                "The stone listens.",
-                "Light fades quickly here.",
-                "Look up.. On occasion..",
-                "Do you feel the rumbling in the stone..",
-                "Ahead my son..."
-            }
+                "Some other time..",
+                "I have nothing to my name...",
+                "No thanks, i dont wish to trade my possesions...",
+                "I'll take the gold, but I have nothing...",
+                "Id rather have a job..."
+            },
+
         },
 
 
@@ -168,6 +122,7 @@ public class DialogCreator
         if (character_type == "person")
         {
             tmp.Add(new SpeakTo(dialog["neutral"]));
+            tmp.Add(new SpeakTrade(dialog["neutral"]));
             return tmp;
         }
         tmp.Add(new SpeakTo(dialog["neutral"]));

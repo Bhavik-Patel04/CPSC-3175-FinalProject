@@ -23,7 +23,7 @@ namespace StarterGame
             }
             else
             {
-                player.WarningMessage("\nGo Where?");
+                player.messenger.WarningMessage("\nGo Where?");
             }
             return false;
         }

@@ -20,7 +20,7 @@ namespace StarterGame
             bool answer = true;
             if (this.HasSecondWord())
             {
-                player.WarningMessage("\nI cannot quit " + this.SecondWord);
+                player.messenger.WarningMessage("\nI cannot quit " + this.SecondWord);
                 answer = false;
             }
             return answer;

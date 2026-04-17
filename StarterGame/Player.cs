@@ -16,31 +16,33 @@ namespace StarterGame
     public class Player
     {
 
-        private Room             _currentRoom = null;
-        public Room              CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
+        private Room _currentRoom = null;
+        public Room CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
         public string type { get; init; }
 
-        public Inventory         main_inventory; // move this to a maker 
-        public Wallet            wallet;
-        public HealthSystem      health ;
-        public DialogHandler     dialogHandler;
+        public Inventory main_inventory; // move this to a maker 
+        public Wallet wallet;
+        public HealthSystem health;
+        public DialogHandler dialogHandler;
+        public Messenger messenger;
 
 
-        public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>(); 
+        public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>();
 
 
-        public string name {  get; init; }
-        public Player(string name, string type, List<Speak> dialog, Inventory I_,Wallet W_, HealthSystem H_, Room room )
+        public string name { get; init; }
+        public Player(string name, string type, List<Speak> dialog, Inventory I_, Wallet W_, HealthSystem H_, Room room)
         {
             this.main_inventory = I_;
-            this.wallet         = W_;
-            this.health         = H_; 
-            this._currentRoom   = room;
-            this.name           = name;
-            this.type           = type;
-         
+            this.wallet = W_;
+            this.health = H_;
+            this._currentRoom = room;
+            this.name = name;
+            this.type = type;
+
             AddSpeakCommand(dialog);
+            this.messenger      = new Messenger(name);
             this.dialogHandler  = new DialogHandler(this);
         }
 
@@ -92,7 +94,7 @@ namespace StarterGame
         public List<string> GetInfo()
         {
             var info = new List<string>();
-            info.Add(name); 
+            info.Add(name);
             info.Add(type);
             return info;
         }
@@ -116,7 +118,7 @@ namespace StarterGame
             }
             else
             {
-                Console.WriteLine($"spawn broken yo { this.name}");
+                Console.WriteLine($"spawn broken yo {this.name}");
             }
         }
 
@@ -128,61 +130,16 @@ namespace StarterGame
             if (nextRoom != null)
             {
 
-                
+
                 CurrentRoom.PlayerHasLeftRoom(this); // leave old room 
                 nextRoom.PlayerHasEnteredRoom(this); // enter next 
                 CurrentRoom = nextRoom;              // set ref inside player
-                
+
             }
             else
             {
-                ErrorMessage("\nThere is no path " + direction);
+                messenger.ErrorMessage("\nThere is no path " + direction);
             }
         }
-
-
-       //-----------------------------------------------------------------------------------------
-       // internal message colors 
-       //-----------------------------------------------------------------------------------------
-
-        public void OutputMessage(string message)
-        {
-            Console.WriteLine(message);
-        }
-
-        public void ColoredMessage(string message, ConsoleColor newColor)
-        {
-            ConsoleColor oldColor = Console.ForegroundColor;
-            Console.ForegroundColor = newColor;
-            OutputMessage(message);
-            Console.ForegroundColor = oldColor;
-        }
-
-        public void NormalMessage(string message)
-        {
-            ColoredMessage(message, ConsoleColor.White);
-        }
-
-        public void InfoMessage(string message)
-        {
-            ColoredMessage(message, ConsoleColor.Blue);
-        }
-
-        public void WarningMessage(string message)
-        {
-            ColoredMessage(message, ConsoleColor.DarkYellow);
-        }
-
-        public void ErrorMessage(string message)
-        {
-            ColoredMessage(message, ConsoleColor.Red);
-        }
-
-        public void ReplyMessage(string message)
-        {
-            ColoredMessage(message, ConsoleColor.Magenta);
-        }
     }
-    
-
 }

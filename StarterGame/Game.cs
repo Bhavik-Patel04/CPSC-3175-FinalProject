@@ -15,6 +15,7 @@ namespace StarterGame
         private bool                _playing;
         private MapGenerator        mapGenerator;
         private CharacterCreator    creator;
+        //private itemCreator         ItemCreator;
         public Game()
         {
             
@@ -22,7 +23,7 @@ namespace StarterGame
             creator                 = new CharacterCreator();
             mapGenerator            = new MapGenerator(creator);
             _parser                 = new Parser(new CommandWords());
-            
+            //itemCreator             = new ItemCreator();
 
 
             // generate map and insert player into it
@@ -50,8 +51,8 @@ namespace StarterGame
                     // death and restart screen 
                     if (!_player.health.isAlive())
                     {
-                        _player.ErrorMessage("You have faild to reclaim yourself...");
-                        _player.WarningMessage("press enter...");
+                        _player.messenger.ErrorMessage("You have faild to reclaim yourself...");
+                        _player.messenger.WarningMessage("press enter...");
                         string ok = Console.ReadLine();
 
                         // retart or respawn
@@ -72,21 +73,21 @@ namespace StarterGame
                     // make these a plug in 
 
                     // wallet and health stats 
-                    _player.WarningMessage($"\n Health: {_player.health.GetHealthStatus()} ");
-                    _player.WarningMessage($"\n Gold: {_player.wallet.GetGoldInWallet()} ");
+                    _player.messenger.WarningMessage($"\n Health: {_player.health.GetHealthStatus()} ");
+                    _player.messenger.WarningMessage($"\n Gold: {_player.wallet.GetGoldInWallet()} ");
 
 
                     // plugin for nearby players 
                     string nearby = _player.CurrentRoom.GetNearByPlayers(_player.name);
                     if (nearby != "")
                     {
-                        _player.WarningMessage($"\n ---------------------------------------------------- ");
-                        _player.NormalMessage("\n" + _player.CurrentRoom.GetNearByPlayers(_player.name));
-                        _player.WarningMessage($"\n ---------------------------------------------------- ");
+                        _player.messenger.WarningMessage($"\n ---------------------------------------------------- ");
+                        _player.messenger.NormalMessage("\n" + _player.CurrentRoom.GetNearByPlayers(_player.name));
+                        _player.messenger.WarningMessage($"\n ---------------------------------------------------- ");
                     }
 
                     // room description 
-                    _player.NormalMessage("\n" + _player.CurrentRoom.Description());
+                    _player.messenger.NormalMessage("\n" + _player.CurrentRoom.Description());
                     
                     
                     
@@ -95,7 +96,7 @@ namespace StarterGame
                     Console.Clear();
                     if (command == null)
                     {   
-                        _player.ErrorMessage("I don't understand...");
+                        _player.messenger.ErrorMessage("I don't understand...");
                     }
                     else
                     {
@@ -111,13 +112,13 @@ namespace StarterGame
         public void Start()
         {
             _playing = true;
-            _player.InfoMessage(Welcome());
+            _player.messenger.InfoMessage(Welcome());
         }
 
         public void End()
         {
             _playing = false;
-            _player.InfoMessage(Goodbye());
+            _player.messenger.InfoMessage(Goodbye());
         }
 
   

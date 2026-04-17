@@ -13,17 +13,44 @@ public class DialogHandler
     }
 
 
-	public void DialogSelect( Speak cmd )
+	public void GenericSpeach( Speak cmd )
 	{
-		
 		if (cmd.Dialog.ContainsKey("generic"))
 		{
 			int roll = rand.Next(0, cmd.Dialog["generic"].Count);
-            player_ref.ReplyMessage($"Response: {cmd.Dialog["generic"][roll]}");
+            player_ref.messenger.ReplyMessage($"{cmd.Dialog["generic"][roll]}");
 		}
 	}
 
 
+    public void TradeSpeach(Speak cmd)
+    {
+        if (cmd.Dialog.ContainsKey("trade"))
+        {
+            int roll = rand.Next(0, cmd.Dialog["trade"].Count);
+            player_ref.messenger.ReplyMessage($"{cmd.Dialog["trade"][roll]}");
+        }
+    }
 
+
+    public void ThankYouSpeach(Speak cmd)
+    {
+        if (cmd.Dialog.ContainsKey("thanks"))
+        {
+            int roll = rand.Next(0, cmd.Dialog["thanks"].Count);
+            player_ref.messenger.ReplyMessage($"{cmd.Dialog["thanks"][roll]}");
+        }
+    }
+
+    public void NothingToTradeSpeach(Speak cmd)
+    {
+        if (cmd.Dialog.ContainsKey("notrade"))
+        {
+            int roll = rand.Next(0, cmd.Dialog["notrade"].Count);
+            player_ref.messenger.ReplyMessage($"{cmd.Dialog["notrade"][roll]}");
+        }
+    }
+
+    
 
 }

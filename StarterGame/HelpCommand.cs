@@ -24,11 +24,11 @@ namespace StarterGame
         {
             if (this.HasSecondWord())
             {
-                player.WarningMessage("\nI cannot help you with " + this.SecondWord);
+                player.messenger.WarningMessage("\nI cannot help you with " + this.SecondWord);
             }
             else
             {
-                player.InfoMessage("\nYou are lost. You are alone. You wander around the university, \n\nYour available commands are " + _words.Description());
+                player.messenger.InfoMessage("\nYou are lost. You are alone. You wander around the university, \n\nYour available commands are " + _words.Description());
             }
             return false;
         }

@@ -21,6 +21,8 @@ public class MapGenerator
     private Dictionary<int, Dictionary<int, Room>> Unstable_mine_rooms_cache    = new Dictionary<int, Dictionary<int, Room>>();
     
 
+
+
     private Dictionary<int, Dictionary<int,Room>> rooms_cache;                  // all rooms 
 
 

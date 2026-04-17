@@ -27,7 +27,7 @@ namespace StarterGame
             }
             else
             {
-                player.WarningMessage("\nInventory? What did you want to do?");
+                player.messenger.WarningMessage("\nInventory? What did you want to do?");
 
             }
             return false;
