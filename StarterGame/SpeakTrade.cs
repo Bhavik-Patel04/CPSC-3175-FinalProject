@@ -21,7 +21,6 @@ public class SpeakTrade : Speak
         p1.messenger.WarningMessage($"Trading with : [ {p2.name} : {p2.type} ] ");
         // needs to hook into p2's interactions menu
         
-
         
         // menu
         
@@ -49,6 +48,12 @@ public class SpeakTrade : Speak
                         choice = true;
                     }
                     p1.messenger.WarningMessage($"Selected:  {result}");
+
+                    if (result == 0)
+                    {
+                        p2.dialogHandler.QuitTrade(this);
+                        choice = false;
+                    }
                 }
                 else
                 {

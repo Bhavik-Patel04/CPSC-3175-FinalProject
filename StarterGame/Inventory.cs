@@ -7,7 +7,7 @@ public class Inventory : IInventory
 {
 
     private Dictionary<string, Item> pocket = new Dictionary<string, Item>();   
-    private Dictionary<string, Item> equpment = new Dictionary<string, Item>();
+    private Dictionary<string, Item> equipment = new Dictionary<string, Item>();
     private int Capacity                = 100;      // capacity cap
     private double Weight_onboard       = 0.00;
     private double Weight_cap           = 75.00;    // pocket weight limit
@@ -52,19 +52,21 @@ public class Inventory : IInventory
     // Equipment attachment
     //-------------------------------------------------------------------------------------------------------
 
-    public bool Equip(Item item)
+    public bool Equip(string id)
     {
-        string tmp = item.id;
-        if (item.Equippable && item.OnlyOneFlag)
+        if (pocket.ContainsKey(id))
         {
-            if (!equpment.ContainsKey(item.id))
+            if (equipment[id].Equippable && equipment[id].OnlyOneFlag)
             {
-                if (Equipment_onboard + item.mass <= Equipment_onboard)
+                if (!equipment.ContainsKey(equipment[id].id))
                 {
-                    Equipment_onboard += item.mass;
-                    DelItem(tmp, 1);
-                    equpment.Add(tmp, item);
-                    return true;
+                    if (Equipment_onboard + equipment[id].mass <= Equipment_onboard)
+                    {
+                        Equipment_onboard += equipment[id].mass;
+                        DelItem(id, 1);
+                        equipment.Add(id, equipment[id]);
+                        return true;
+                    }
                 }
             }
         }
@@ -73,10 +75,10 @@ public class Inventory : IInventory
 
     public bool Unequip(string id)
     {
-        if (equpment.ContainsKey(id))
+        if (equipment.ContainsKey(id))
         {
-            Item tmp = equpment[id];
-            equpment.Remove(id);
+            Item tmp = equipment[id];
+            equipment.Remove(id);
             AddItem(tmp);
             return true;
 
@@ -216,10 +218,20 @@ public class Inventory : IInventory
     {
         if (pocket.Count != 0)
         {
+            string tmp = "";
+
+            foreach (var item in equipment.Values)
+            {
+                tmp += $"{item.id} >>> {item.numberOf} (Mass: {item.mass * item.numberOf}\n";
+            }
+
+            tmp += "------------------------------------------------------------------------------\n";
+
             foreach (var item in pocket.Values)
             {
-                return $"{item.id} >>> {item.numberOf} (Mass: {item.mass * item.numberOf}";
+                tmp +=  $"{item.id} >>> {item.numberOf} (Mass: {item.mass * item.numberOf}\n";
             }
+            return tmp;
         }
         return "Your inventory is empty...";
     }

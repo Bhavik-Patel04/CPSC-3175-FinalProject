@@ -7,9 +7,12 @@ public class DialogCreator
 
     private Dictionary<string, Dictionary<string, List<string>>> dialog = new Dictionary<string, Dictionary<string, List<string>>>()
     {
+        ["hero"] = new Dictionary<string, List<string>>()
+        {
 
+        },
 
-        ["merchant"] = new Dictionary<string, List<string>>()
+            ["merchant"] = new Dictionary<string, List<string>>()
         {
             ["generic"] = new List<string>()
             {
@@ -42,12 +45,20 @@ public class DialogCreator
                 "Buy or scram...",
                 "I dont like beggers.."
             },
+            ["quittrade"] = new List<string>()
+            {
+               "Nothing of interest ? ",
+               "See you soon...",
+               "Next time then...",
+               "Hmm..",
+            },
             ["thanks"] = new List<string>()
             {
                 "Come again...",
                 "Thank You for you business...",
                 "May the stone shelter you from the gods..."
             }
+
             
         },
 
@@ -108,6 +119,13 @@ public class DialogCreator
                 "No thanks, i dont wish to trade my possesions...",
                 "I'll take the gold, but I have nothing...",
                 "Id rather have a job..."
+            },
+            ["quittrade"] = new List<string>()
+            {
+               "...",
+               "Why;d you bother asking me then...",
+               "Hmm..",
+               "Next time..."
             },
 
 

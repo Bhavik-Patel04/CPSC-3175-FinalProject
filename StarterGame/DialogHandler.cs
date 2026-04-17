@@ -62,5 +62,15 @@ public class DialogHandler
     }
 
 
+    public void QuitTrade(Speak cmd)
+    {
+        if (cmd.Dialog.ContainsKey("quittrade"))
+        {
+            int roll = rand.Next(0, cmd.Dialog["quittrade"].Count);
+            player_ref.messenger.ReplyMessage($"{cmd.Dialog["quittrade"][roll]}");
+        }
+    }
+
+
 
 }

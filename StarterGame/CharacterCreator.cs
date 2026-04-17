@@ -130,18 +130,29 @@ public class CharacterCreator
 
         // do commands go here 
 
-        List<Speak> dialog = dialogCreator.MakeDialogSet(type);
+        List<Speak>  dialogCommands = dialogCreator.MakeDialogSet(type);
+
+
+        List<ICs> inventoryCommands = new List<ICs>();    // hook into commands for inventory ( external AI and User interface hooking )
+        inventoryCommands.Add(new InventoryOpen());
+        inventoryCommands.Add(new InventoryEquip());
+        inventoryCommands.Add(new InventoryUnequip());
+
+
+
+
 
 
         Player character                = new Player(
-                                                        name,           // Character name 
-                                                        type,           // type of player ( used for NPCs and targeting)
-                                                        dialog,         // custom dialog prompts 
-                                                        main_inventory, // internal system 
-                                                        wallet,         // internal system 
-                                                        health,         // internal system
+                                                        name,               // Character name 
+                                                        type,               // type of player ( used for NPCs and targeting)
+                                                        dialogCommands,     // custom dialog prompt hooking 
+                                                        main_inventory,     // internal system 
+                                                        inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
+                                                        wallet,             // internal system 
+                                                        health,             // internal system
                                                     
-                                                        null            // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                        null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
                                                      );
         
         players.Add(name, character); // spawn after creation 

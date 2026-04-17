@@ -21,29 +21,32 @@ namespace StarterGame
 
         public string type { get; init; }
 
-        public Inventory main_inventory; // move this to a maker 
-        public Wallet wallet;
-        public HealthSystem health;
-        public DialogHandler dialogHandler;
-        public Messenger messenger;
+        public Inventory        main_inventory; // move this to a maker 
+        public Wallet           wallet;
+        public HealthSystem     health;
+        public DialogHandler    dialogHandler;
+        public Messenger        messenger;
 
 
-        public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>();
+        public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>();    
+        public Dictionary<string, ICs> InventoryCommands { get; init; } = new Dictionary<string, ICs>();
 
 
         public string name { get; init; }
-        public Player(string name, string type, List<Speak> dialog, Inventory I_, Wallet W_, HealthSystem H_, Room room)
+        public Player(string name, string type, List<Speak> dialog, Inventory I_, List<ICs> InventoryCommands ,Wallet W_, HealthSystem H_, Room room)
         {
-            this.main_inventory = I_;
-            this.wallet = W_;
-            this.health = H_;
-            this._currentRoom = room;
-            this.name = name;
-            this.type = type;
-
             AddSpeakCommand(dialog);
-            this.messenger      = new Messenger(name);
-            this.dialogHandler  = new DialogHandler(this);
+            AddInventoryCommand(InventoryCommands);
+
+            this.main_inventory     = I_;
+            this.wallet             = W_;
+            this.health             = H_;
+            this._currentRoom       = room;
+            this.name               = name;
+            this.type               = type;
+            this.messenger          = new Messenger(name);
+            this.dialogHandler      = new DialogHandler(this);
+           
         }
 
 
@@ -66,12 +69,20 @@ namespace StarterGame
 
 
 
-        // add speak commands in 
+        // add speak command user interface linkers 
         public void AddSpeakCommand(List<Speak> cmd)
         {
             foreach (Speak speak in cmd)
             {
                 SpeakCommands.Add(speak.keyword, speak);
+            }
+        }
+
+        public void AddInventoryCommand(List<ICs> cmd)
+        {
+            foreach (ICs inv_cmd in cmd)
+            {
+                InventoryCommands.Add(inv_cmd.keyword, inv_cmd);
             }
         }
 

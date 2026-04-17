@@ -17,18 +17,22 @@ namespace StarterGame
         public bool Execute(Player player)
         {
 
-            // i see a mojor problem here 
-            // normally actions in rooms like ( pick up items, scan, talk to people )  hook into inventory ( pick up itmes ) 
-            // what does " inventory "second word" do - the only thing you can do with no action is look at it ? so thi just brings it up ? 
             if (this.HasSecondWord())
             {
-              
-
+                    if (player.InventoryCommands.ContainsKey(this.SecondWord))
+                    {
+                        player.InventoryCommands[this.SecondWord].Execute(player,this.ThirdWord);
+                    }
+                    else
+                    {
+                        player.messenger.ReplyMessage("\nCant do that... ");
+                    }
+                
+                return false;
             }
             else
             {
-                player.messenger.WarningMessage("\nInventory? What did you want to do?");
-
+                player.messenger.ReplyMessage("\nWhat was I doing?...");
             }
             return false;
         }
