@@ -31,6 +31,8 @@ public class DialogCreator
                 "Eyes up next time.",
                 "Easy mark."
             }
+
+
         },
 
         ["merchant"] = new Dictionary<string, List<string>>()
@@ -109,7 +111,7 @@ public class DialogCreator
 
         ["neutral"] = new Dictionary<string, List<string>>()
         {
-            ["passing"] = new List<string>()
+            ["generic"] = new List<string>()
             {
                 "You still breathing?",
                 "Careful where you step.",
@@ -147,24 +149,29 @@ public class DialogCreator
 
 
 
-
-
-    public DialogCreator()
-	{
-	}
-
-
-
-
-
-    public Speak MakeDialogSet(string character_type)
+    public List<Speak> MakeDialogSet(string character_type)
     {
+        List<Speak> tmp = new List<Speak>();
         if (character_type == "beggar")
         {
-           
-            return new SpeakTo(dialog["beggar"]);
+            tmp.Add(new SpeakTo(dialog["beggar"]));
+            return tmp;
         }
-        return new SpeakTo(dialog["neutral"]);
+
+        if (character_type == "merchant")
+        {
+            tmp.Add(new SpeakTo(dialog["merchant"]));
+            tmp.Add(new SpeakTrade(dialog["merchant"]));
+            return tmp;
+        }
+
+        if (character_type == "person")
+        {
+            tmp.Add(new SpeakTo(dialog["neutral"]));
+            return tmp;
+        }
+        tmp.Add(new SpeakTo(dialog["neutral"]));
+        return tmp;
     }
 
 

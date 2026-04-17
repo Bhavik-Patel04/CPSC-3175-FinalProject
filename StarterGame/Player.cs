@@ -19,27 +19,33 @@ namespace StarterGame
         private Room             _currentRoom = null;
         public Room              CurrentRoom { get { return _currentRoom; } set { _currentRoom = value; } }
 
-        private string Type { get; init; }
+        public string type { get; init; }
 
         public Inventory         main_inventory; // move this to a maker 
         public Wallet            wallet;
         public HealthSystem      health ;
+        public DialogHandler     dialogHandler;
 
 
         public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>(); 
 
 
         public string name {  get; init; }
-        public Player(string name, string Type, Speak dialog, Inventory I_,Wallet W_, HealthSystem H_, Room room )
+        public Player(string name, string type, List<Speak> dialog, Inventory I_,Wallet W_, HealthSystem H_, Room room )
         {
             this.main_inventory = I_;
             this.wallet         = W_;
             this.health         = H_; 
             this._currentRoom   = room;
             this.name           = name;
-            this.Type           = Type;
+            this.type           = type;
+         
             AddSpeakCommand(dialog);
+            this.dialogHandler  = new DialogHandler(this);
         }
+
+
+
 
 
         // internal updater 
@@ -56,20 +62,47 @@ namespace StarterGame
             wallet.update();
         }
 
-        public void AddSpeakCommand(Speak cmd)
+
+
+        // add speak commands in 
+        public void AddSpeakCommand(List<Speak> cmd)
         {
-            SpeakCommands.Add(cmd.keyword, cmd);
+            foreach (Speak speak in cmd)
+            {
+                SpeakCommands.Add(speak.keyword, speak);
+            }
         }
 
+
+
+
+        // looks internally in the list of availible speak commands and passes it to sub systems
+        public Speak? LookUpSpeakCommand(string key)
+        {
+            if (SpeakCommands.ContainsKey(key))
+            {
+                return SpeakCommands[key];
+            }
+            return null;
+        }
+
+
+
+        // get infor about player ( name and type // EG: Steven_andrews : Merchant )
         public List<string> GetInfo()
         {
             var info = new List<string>();
             info.Add(name); 
-            info.Add(Type);
+            info.Add(type);
             return info;
         }
 
 
+        //-----------------------------------------------------------------------------------------
+        // motion 
+        //-----------------------------------------------------------------------------------------
+
+        // warps directly to room - used for spawn as well 
         public void SpawnWarp(Room room) // push to room 
         {
             if (CurrentRoom != null)
@@ -108,10 +141,9 @@ namespace StarterGame
         }
 
 
-
-
-
-
+       //-----------------------------------------------------------------------------------------
+       // internal message colors 
+       //-----------------------------------------------------------------------------------------
 
         public void OutputMessage(string message)
         {
@@ -145,6 +177,12 @@ namespace StarterGame
         {
             ColoredMessage(message, ConsoleColor.Red);
         }
+
+        public void ReplyMessage(string message)
+        {
+            ColoredMessage(message, ConsoleColor.Magenta);
+        }
     }
+    
 
 }

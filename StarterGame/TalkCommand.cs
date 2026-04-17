@@ -38,7 +38,11 @@ namespace StarterGame
                         if (p2.SpeakCommands.ContainsKey(this.SecondWord))
                         {
                             
-                            string? response = p2.SpeakCommands[this.SecondWord].Execute(player,p2);
+                            p2.SpeakCommands[this.SecondWord].Execute(player,p2);
+                        }
+                        else
+                        {
+                            player.WarningMessage("\nI shouldnt bother asking them.. ");
                         }
                     }
                 }

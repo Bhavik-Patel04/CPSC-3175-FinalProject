@@ -53,11 +53,11 @@ public class MapGenerator
         {
             
             // roll for type 
-            int roll = rand.Next(0, 4);
+            int roll = rand.Next(0, 3);
             string type = "person";             // travelers
             switch (roll)
             {
-                case 1: type    = "begger";     // go out side of towns 
+                case 1: type    = "beggar";     // go out side of towns 
                         break;
                 case 2: type    = "merchant";   // go to towns 
                         break;
@@ -86,7 +86,7 @@ public class MapGenerator
                 }
                 return RollForTownOutskits();
                 
-            case "begger":
+            case "beggar":
                 if (roll == 0)
                 {
                     RollForMines();

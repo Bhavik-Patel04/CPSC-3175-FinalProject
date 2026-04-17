@@ -122,7 +122,7 @@ public class CharacterCreator
         Inventory main_inventory        = new Inventory();
         Wallet wallet                   = new Wallet(0, 1000);
         HealthSystem health             = new HealthSystem();
-
+        
 
 
         // speak commands go here 
@@ -130,7 +130,7 @@ public class CharacterCreator
 
         // do commands go here 
 
-        Speak dialog = dialogCreator.MakeDialogSet(type);
+        List<Speak> dialog = dialogCreator.MakeDialogSet(type);
 
 
         Player character                = new Player(
@@ -140,6 +140,7 @@ public class CharacterCreator
                                                         main_inventory, // internal system 
                                                         wallet,         // internal system 
                                                         health,         // internal system
+                                                    
                                                         null            // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
                                                      );
         
