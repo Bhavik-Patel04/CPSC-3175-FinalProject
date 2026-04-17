@@ -35,13 +35,20 @@ public class DialogCreator
                 "Try again later, im fresh out...",
                 "Business has been good.. but not for you..."
             },
+            ["notenough"] = new List<string>()
+            {
+                "Not enough gold...",
+                "Dont jerk me around...",
+                "Buy or scram...",
+                "I dont like beggers.."
+            },
             ["thanks"] = new List<string>()
             {
                 "Come again...",
                 "Thank You for you business...",
                 "May the stone shelter you from the gods..."
             }
-
+            
         },
 
         ["beggar"] = new Dictionary<string, List<string>>()
@@ -86,7 +93,15 @@ public class DialogCreator
                 "No coin, no answer.",
                 "Your need is my profit."
             },
-             ["notrade"] = new List<string>()
+            ["notenough"] = new List<string>()
+            {
+                "Not enough gold...",
+                "Thats not what we agreed uppon..",
+                "You sure you read the price...",
+                "Hey, What are you trying to pull..",
+                "Um?..."
+            },
+            ["notrade"] = new List<string>()
             {
                 "Some other time..",
                 "I have nothing to my name...",
@@ -94,6 +109,7 @@ public class DialogCreator
                 "I'll take the gold, but I have nothing...",
                 "Id rather have a job..."
             },
+
 
         },
 

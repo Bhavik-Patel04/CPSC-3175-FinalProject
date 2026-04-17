@@ -51,6 +51,16 @@ public class DialogHandler
         }
     }
 
-    
+
+    public void NotEnoughToTrade(Speak cmd)
+    {
+        if (cmd.Dialog.ContainsKey("notenough"))
+        {
+            int roll = rand.Next(0, cmd.Dialog["notenough"].Count);
+            player_ref.messenger.ReplyMessage($"{cmd.Dialog["notenough"][roll]}");
+        }
+    }
+
+
 
 }

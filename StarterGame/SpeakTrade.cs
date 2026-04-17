@@ -56,11 +56,25 @@ public class SpeakTrade : Speak
                 }
             }
 
+            Item purchase = p2.main_inventory.getItem(forsale[option_select].id);
+
+            // handle money transaction 
+            if (p1.wallet.gold < purchase.price)
+            {
+                p2.dialogHandler.NotEnoughToTrade(this);
+                p1.messenger.WarningMessage("----------------------------------------------");
+                return;
+            }
+            else
+            {
+                p1.wallet.GiveGold(purchase.price);
+                p2.wallet.AddGold(purchase.price);
+            }
+
 
             // transfer item 
-            Item purchased = p2.main_inventory.getItem(forsale[option_select].id);
-            p2.main_inventory.DelItem(purchased.id, 1);
-            p1.main_inventory.AddItem(purchased);
+            p2.main_inventory.DelItem(purchase.id, 1);
+            p1.main_inventory.AddItem(purchase);
 
             p1.messenger.WarningMessage("----------------------------------------------");
         }
