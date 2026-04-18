@@ -13,7 +13,7 @@ namespace StarterGame
      * pattern. The instance of this class should
      * execute all the commands.
      */
-    public class Player
+    public abstract class Player
     {
 
         private Room _currentRoom = null;
@@ -33,7 +33,7 @@ namespace StarterGame
 
 
         public string name { get; init; }
-        public Player(string name, string type, List<Speak> dialog, Inventory I_, List<ICs> InventoryCommands ,Wallet W_, HealthSystem H_, Room room)
+        public Player(string name, List<Speak> dialog, Inventory I_, List<ICs> InventoryCommands ,Wallet W_, HealthSystem H_, Room room)
         {
             AddSpeakCommand(dialog);
             AddInventoryCommand(InventoryCommands);
@@ -43,7 +43,6 @@ namespace StarterGame
             this.health             = H_;
             this._currentRoom       = room;
             this.name               = name;
-            this.type               = type;
             this.messenger          = new Messenger(name);
             this.dialogHandler      = new DialogHandler(this);
            
@@ -106,7 +105,7 @@ namespace StarterGame
         {
             var info = new List<string>();
             info.Add(name);
-            info.Add(type);
+            info.Add(this.GetType().Name);
             return info;
         }
 
