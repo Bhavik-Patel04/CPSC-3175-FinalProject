@@ -13,9 +13,13 @@ public class Inventory : IInventory
     private Dictionary<string, Item> armor = new Dictionary<string, Item>();
 
     private int Capacity                = 100;      // capacity cap
+    private int Capacity_onboard        = 0;
+
+
     private double Weight_onboard       = 0.00;
     private double Weight_cap           = 75.00;    // pocket weight limit
-    private int Capacity_onboard        = 0;
+
+ 
     private double Equipment_onboard    = 0;
     private int Equipment_cap           = 25;       // 100 pound carry limit
 
