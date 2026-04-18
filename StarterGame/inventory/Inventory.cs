@@ -228,10 +228,10 @@ public class Inventory : IInventory
         else
         {
             // create persitant tracking
-            int temp_actualAmmount  = 0;
-            temp_actualAmmount   = pocket[id].numberOf;
-            Capacity_onboard    -= pocket[id].numberOf;
-            Weight_onboard      -= (pocket[id].numberOf) * pocket[id].mass;
+            int temp_actualAmmount      = 0;
+            temp_actualAmmount          = pocket[id].numberOf;
+            Capacity_onboard           -= pocket[id].numberOf;
+            Weight_onboard             -= (pocket[id].numberOf) * pocket[id].mass;
             pocket.Remove(id);
             return temp_actualAmmount;
 

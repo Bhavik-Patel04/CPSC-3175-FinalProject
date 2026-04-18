@@ -1,9 +1,10 @@
 ﻿using StarterGame;
+using StarterGame;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Reflection.Metadata;
-
+using System.Text;
 public class CharacterCreator
 {
 
@@ -140,20 +141,72 @@ public class CharacterCreator
 
 
 
-
-
-
-        Player character                = new Player(
+        Player character;
+        switch (type)
+        {
+            case "merchant":
+                character = new Merchant(
                                                         name,               // Character name 
-                                                        type,               // type of player ( used for NPCs and targeting)
                                                         dialogCommands,     // custom dialog prompt hooking 
                                                         main_inventory,     // internal system 
                                                         inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
                                                         wallet,             // internal system 
                                                         health,             // internal system
-                                                    
+
                                                         null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
                                                      );
+                break;
+            case "beggar":
+                character = new Beggar(
+                                                        name,               // Character name 
+                                                        dialogCommands,     // custom dialog prompt hooking 
+                                                        main_inventory,     // internal system 
+                                                        inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
+                                                        wallet,             // internal system 
+                                                        health,             // internal system
+
+                                                        null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                     );
+                break;
+            case "drunk":
+                character = new Drunk(
+                                                        name,               // Character name 
+                                                        dialogCommands,     // custom dialog prompt hooking 
+                                                        main_inventory,     // internal system 
+                                                        inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
+                                                        wallet,             // internal system 
+                                                        health,             // internal system
+
+                                                        null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                     );
+                break;
+            case "person":
+                character = new Person(
+                                                        name,               // Character name 
+                                                        dialogCommands,     // custom dialog prompt hooking 
+                                                        main_inventory,     // internal system 
+                                                        inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
+                                                        wallet,             // internal system 
+                                                        health,             // internal system
+
+                                                        null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                     );
+                break;
+            default:
+                character = new Person(
+                                                       name,               // Character name
+                                                       dialogCommands,     // custom dialog prompt hooking 
+                                                       main_inventory,     // internal system 
+                                                       inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
+                                                       wallet,             // internal system 
+                                                       health,             // internal system
+
+                                                       null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                    );
+                break;
+        }
+
+       
         
         players.Add(name, character); // spawn after creation 
         return character;

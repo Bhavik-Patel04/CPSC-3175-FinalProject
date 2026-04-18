@@ -30,9 +30,9 @@ namespace StarterGame
 
 
              
-             Item sword         = new Sword("Short_sword",1,12,100,25);                                    // items generation concept exampe code for a generator ( kinda sketch give me a second ) 
-             Item sword2        = new Sword("Heavy_sword",1, 15, 250, 32);
-             Item potion1       = new HealingPotion("Hp_elixer", 1, 1, 250, 20);
+            Item sword         = new Sword("Short_sword",1,12,100,25);                                    // items generation concept exampe code for a generator ( kinda sketch give me a second ) 
+            Item sword2        = new Sword("Heavy_sword",1, 15, 250, 32);
+            Item potion1       = new HealingPotion("Hp_elixer", 1, 1, 250, 20);
 
             Item armor          = new Helmet("Vile_Helmet",1 , 5, 35,10,3,1);
             
