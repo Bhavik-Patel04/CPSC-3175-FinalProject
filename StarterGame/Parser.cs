@@ -51,6 +51,15 @@ namespace StarterGame
                         command.ThirdWord = null;
                     }
 
+                    if (words.Length > 3)
+                    {
+                        command.ForthWord = words[3];
+                    }
+                    else
+                    {
+                        command.ForthWord = null;
+                    }
+
                 }
                 else
                 {

@@ -27,10 +27,24 @@ namespace StarterGame
 
 
             // generate map and insert player into it
+
+
+             
+             Item sword         = new Sword("Short_sword",1,12,100,25);                                    // items generation concept exampe code for a generator ( kinda sketch give me a second ) 
+             Item sword2        = new Sword("Heavy_sword",1, 15, 250, 32);
+             Item potion1       = new HealingPotion("Hp_elixer", 1, 1, 250, 20);
+
+            Item armor          = new Helmet("Vile_Helmet",1 , 5, 35,10,3,1);
+            
             Room start              = mapGenerator.Generate();
             _player                 = creator.createRandomPerson(); // main player 
             _player.SpawnWarp(start);
-            
+
+
+            _player.main_inventory.AddItem(sword); // populate inventory
+            _player.main_inventory.AddItem(sword2);
+            _player.main_inventory.AddItem(potion1);
+            _player.main_inventory.AddItem(armor);
         }
 
 
@@ -46,7 +60,7 @@ namespace StarterGame
                 bool finished = false;
                 while (!finished)
                 {
-                    creator.update(); // internal updater for players 
+                    creator.update(); // internal updater for all players/NPC sub systems 
 
                     // death and restart screen 
                     if (!_player.health.isAlive())
@@ -73,17 +87,19 @@ namespace StarterGame
                     // make these a plug in 
 
                     // wallet and health stats 
-                    _player.messenger.WarningMessage($"\n Health: {_player.health.GetHealthStatus()} ");
-                    _player.messenger.WarningMessage($"\n Gold: {_player.wallet.GetGoldInWallet()} ");
+                    
+                    _player.messenger.WarningMessage($"\n{_player.main_inventory.getInfo()}");
+                    _player.messenger.WarningMessage($"\nHealth: {_player.health.GetHealthStatus()} ");
+                    _player.messenger.WarningMessage($"\nGold: {_player.wallet.GetGoldInWallet()} ");
 
 
                     // plugin for nearby players 
                     string nearby = _player.CurrentRoom.GetNearByPlayers(_player.name);
                     if (nearby != "")
                     {
-                        _player.messenger.WarningMessage($"\n ---------------------------------------------------- ");
+                        _player.messenger.WarningMessage($"\n---------------------------------------------------- ");
                         _player.messenger.NormalMessage("\n" + _player.CurrentRoom.GetNearByPlayers(_player.name));
-                        _player.messenger.WarningMessage($"\n ---------------------------------------------------- ");
+                        _player.messenger.WarningMessage($"\n---------------------------------------------------- ");
                     }
 
                     // room description 

@@ -19,6 +19,9 @@ namespace StarterGame
         private string _ThirdWord;
         public string ThirdWord { get { return _ThirdWord; } set { _ThirdWord = value; } }
 
+        private string _ForthWord;
+        public string ForthWord { get { return _ForthWord; } set { _ForthWord = value; } }
+
         public Command()
         {
             this.Name = "";
@@ -32,6 +35,11 @@ namespace StarterGame
         }
 
         public bool HasThirdWord()
+        {
+            return this.ThirdWord != null;
+        }
+
+        public bool HasForthWord()
         {
             return this.ThirdWord != null;
         }

@@ -3,11 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
+using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 public class Inventory : IInventory
 {
 
     private Dictionary<string, Item> pocket = new Dictionary<string, Item>();   
     private Dictionary<string, Item> equipment = new Dictionary<string, Item>();
+    private Dictionary<string, Item> armor = new Dictionary<string, Item>();
+
     private int Capacity                = 100;      // capacity cap
     private double Weight_onboard       = 0.00;
     private double Weight_cap           = 75.00;    // pocket weight limit
@@ -15,9 +19,12 @@ public class Inventory : IInventory
     private double Equipment_onboard    = 0;
     private int Equipment_cap           = 25;       // 100 pound carry limit
 
-   // ABSOLUTE LIMITS
-   private double MAX_WEIGHT = 150;
-   private double MAX_EQIPMENT_WEIGHT = 50;
+    private double Armor_onboard        = 0;
+    private int Armor_cap               = 25;        
+
+    // ABSOLUTE LIMITS
+    private double MAX_WEIGHT           = 150;
+   private double MAX_EQIPMENT_WEIGHT   = 50;
 
 
     //-------------------------------------------------------------------------------------------------------
@@ -52,33 +59,60 @@ public class Inventory : IInventory
     // Equipment attachment
     //-------------------------------------------------------------------------------------------------------
 
+
     public bool Equip(string id)
     {
         if (pocket.ContainsKey(id))
         {
-            if (equipment[id].Equippable && equipment[id].OnlyOneFlag)
+            if (pocket[id] is Weapon )
             {
-                if (!equipment.ContainsKey(equipment[id].id))
-                {
-                    if (Equipment_onboard + equipment[id].mass <= Equipment_onboard)
+                if (!equipment.ContainsKey(pocket[id].id))
+                { 
+                    if (Equipment_onboard + pocket[id].mass <= Equipment_cap)
                     {
-                        Equipment_onboard += equipment[id].mass;
+                        Equipment_onboard += pocket[id].mass;
+                        equipment.Add(id, pocket[id]);
                         DelItem(id, 1);
-                        equipment.Add(id, equipment[id]);
                         return true;
                     }
                 }
             }
+
+            if (pocket[id] is Armor)
+            {
+                if (!armor.ContainsKey(pocket[id].id))
+                {
+                    if (Armor_onboard + pocket[id].mass <= Armor_cap)
+                    {
+                        Armor_onboard += pocket[id].mass;
+                        armor.Add(id, pocket[id]);
+                        DelItem(id, 1);
+                        return true;
+                    }
+                }
+            }
+
         }
         return false;
     }
+
 
     public bool Unequip(string id)
     {
         if (equipment.ContainsKey(id))
         {
+            Equipment_onboard -= equipment[id].mass;
             Item tmp = equipment[id];
             equipment.Remove(id);
+            AddItem(tmp);
+            return true;
+
+        }
+        if (armor.ContainsKey(id))
+        {
+            Armor_onboard -= armor[id].mass;
+            Item tmp = armor[id];
+            armor.Remove(id);
             AddItem(tmp);
             return true;
 
@@ -124,14 +158,9 @@ public class Inventory : IInventory
         Item item = getItem(id);
         if (item != null)
         {
-            if (item.type == "consumable")
+           if (item is Potion)
             {
-                // really need to send this to a processor or something here 
-                // get properties 
-                // send them to a thing to use it 
 
-                int amt_used = DelItem(id,ammount);
-                
             }
         }
     }
@@ -150,20 +179,18 @@ public class Inventory : IInventory
             double item_mass = (item.numberOf * item.mass);
             // check if adding it makes us over weight...
 
-            if (!item.OnlyOneFlag)
+            if ((item_mass + Weight_onboard) <= Weight_cap)
             {
-                if ((item_mass + Weight_onboard) <= Weight_cap)
+                if (Capacity_onboard + item.numberOf <= Capacity)
                 {
-                    if (Capacity_onboard + item.numberOf <= Capacity)
-                    {
-                        Capacity_onboard += item.numberOf;  // capacity
-                        Weight_onboard += item_mass;     // add up mass
-                        pocket[item.id].numberOf += item.numberOf; // add
+                    Capacity_onboard += item.numberOf;  // capacity
+                    Weight_onboard += item_mass;     // add up mass
+                    pocket[item.id].numberOf += item.numberOf; // add
 
-                        return true;
-                    }
+                    return true;
                 }
             }
+
         }
         // doesnt exist in dictionary
         else
@@ -187,21 +214,20 @@ public class Inventory : IInventory
 
     public int DelItem(string id, int ammount)
     {
-        if (pocket.ContainsKey(id))
+        if (!pocket.ContainsKey(id))
         {
             return 0;
         }
         if (ammount < pocket[id].numberOf) // clamp
         {
-            Capacity_onboard    -= ammount;
-            Weight_onboard      -= (ammount * pocket[id].mass);
-            pocket[id].numberOf       -= ammount;
+            Capacity_onboard            -= ammount;
+            Weight_onboard              -= (ammount * pocket[id].mass);
+            pocket[id].numberOf         -= ammount;
             return ammount;
         }
         else
         {
             // create persitant tracking
-            
             int temp_actualAmmount  = 0;
             temp_actualAmmount   = pocket[id].numberOf;
             Capacity_onboard    -= pocket[id].numberOf;
@@ -213,23 +239,40 @@ public class Inventory : IInventory
     }
 
 
+    public string getInfo()
+    {
+        return $"Inventory weight : [{Weight_onboard}]lbs ||  Equipment : [{Equipment_onboard}]lbs || Armor : [{Armor_onboard}]lbs";
+    }
 
     public string ReadInventory()
     {
         if (pocket.Count != 0)
         {
             string tmp = "";
-
-            foreach (var item in equipment.Values)
+            if (armor.Count > 0)
             {
-                tmp += $"{item.id} >>> {item.numberOf} (Mass: {item.mass * item.numberOf}\n";
+                tmp += "[ Armor ]---------------------------------------------------------------------\n";
+                foreach (var item in armor.Values)
+                {
+                    tmp += $"{item.id} >>> #: {item.numberOf} [Mass: {item.mass * item.numberOf}]\n";
+                }
             }
-
-            tmp += "------------------------------------------------------------------------------\n";
-
-            foreach (var item in pocket.Values)
+            if (equipment.Count > 0)
             {
-                tmp +=  $"{item.id} >>> {item.numberOf} (Mass: {item.mass * item.numberOf}\n";
+                tmp += "[ Equioment ]------------------------------------------------------------------\n";
+                foreach (var item in equipment.Values)
+                {
+                    tmp += $"{item.id} >>> #: {item.numberOf} [Mass: {item.mass * item.numberOf}]\n";
+                }
+            }
+            if (pocket.Count > 0)
+            {
+                tmp += "[ Inventory ]------------------------------------------------------------------\n";
+
+                foreach (var item in pocket.Values)
+                {
+                    tmp += $"{item.id} >>> #: {item.numberOf} [Mass: {item.mass * item.numberOf}]\n";
+                }
             }
             return tmp;
         }
