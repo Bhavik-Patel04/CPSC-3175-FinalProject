@@ -143,7 +143,7 @@ public class Inventory : IInventory
                         armor_lbs += backpack[id].mass;
                         armor.Add(id, backpack[id]);
                         DelItem(id, 1);
-                        sections["head"] = true;
+                        sections["body"] = true;
                         return true;
                     }
                 }
