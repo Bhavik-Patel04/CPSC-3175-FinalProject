@@ -1,6 +1,7 @@
 ﻿using StarterGame;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 public class SpeakTrade : Speak
 {
@@ -18,7 +19,7 @@ public class SpeakTrade : Speak
     {
         //  p1 = player 
         //  p2 = NPC
-        p1.messenger.WarningMessage($"Trading with : [ {p2.name} : {p2.GetType()} ] ");
+        p1.messenger.WarningMessage($"Trading with : [ {p2.name} : {p2.GetType()} ] ", ConsoleColor.Yellow);
         // needs to hook into p2's interactions menu
         
         
@@ -28,36 +29,40 @@ public class SpeakTrade : Speak
 
         if (forsale.Count > 0)
         {
-            p2.dialogHandler.TradeSpeach(this);
-            p1.messenger.WarningMessage("-----------------[Trade Menu]------------------");
-            for (int i = 0; i < forsale.Count; i++)
-            {
-                p2.messenger.ReplyMessage($"{i} : {forsale[i].price}");
-            }
+            p1.messenger.ReciveMessage(p2.name,p2.dialogHandler.TradeSpeach(this),ConsoleColor.Magenta);
+            p1.messenger.NormalMessage("-----------------[Trade Menu]------------------", ConsoleColor.White);
+            
 
-            bool choice = false;
             int option_select = 0;
-            while (!choice)
+            while (true)
             {
+
+                for(int i = 0; i < forsale.Count; i++)
+                {
+                    Console.WriteLine($"{i,-3} : {forsale[i].id,-35}  >>  {forsale[i].mass,8:F2} | {forsale[i].price,10:F2}", ConsoleColor.White);
+                }
+                
+
+                Console.WriteLine($"Selected [ ender number -1 to exit ] : ", ConsoleColor.Yellow);
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out int result))
                 {
-                    if (result > 0 && result < forsale.Count)
+                    if (result >= 0 && result <= forsale.Count)
                     {
                         option_select = result;
-                        choice = true;
+                        break; ;
                     }
-                    p1.messenger.WarningMessage($"Selected:  {result}");
+                    Console.WriteLine($"Selected:  {result}", ConsoleColor.Yellow);
 
-                    if (result == 0)
+                    if (result == -1)
                     {
                         p2.dialogHandler.QuitTrade(this);
-                        choice = false;
+                        break;
                     }
                 }
                 else
                 {
-                    p1.messenger.WarningMessage("That's not a valid number!");
+                    Console.WriteLine("That's not a valid number!", ConsoleColor.Yellow);
                 }
             }
 
@@ -67,7 +72,6 @@ public class SpeakTrade : Speak
             if (p1.wallet.gold < purchase.price)
             {
                 p2.dialogHandler.NotEnoughToTrade(this);
-                p1.messenger.WarningMessage("----------------------------------------------");
                 return;
             }
             else
@@ -80,17 +84,15 @@ public class SpeakTrade : Speak
             // transfer item 
             p2.main_inventory.DelItem(purchase.id, 1);
             p1.main_inventory.AddItem(purchase);
-
-            p1.messenger.WarningMessage("----------------------------------------------");
         }
         else
         {
-            p2.dialogHandler.NothingToTradeSpeach(this);
+            p1.messenger.ReciveMessage(p2.name,p2.dialogHandler.NothingToTradeSpeach(this), ConsoleColor.Magenta);
             return;
         }
 
 
-        p2.dialogHandler.ThankYouSpeach(this);
+        p1.messenger.ReciveMessage(p2.name,p2.dialogHandler.ThankYouSpeach(this), ConsoleColor.Magenta);
         
     }
 }

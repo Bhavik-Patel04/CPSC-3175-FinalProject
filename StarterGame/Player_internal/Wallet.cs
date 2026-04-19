@@ -23,14 +23,14 @@ public class Wallet
     }
 
 
-    public string GetGoldInWallet()
+    public double GetGoldInWallet()
     {
-        return gold.ToString();
+        return gold;
     }
 
     public bool AddGold(double amount)
     {
-        if (gold + amount > Capacity)
+        if (gold + Math.Abs(amount) > Capacity)
         {
             return false;
         }
@@ -43,29 +43,14 @@ public class Wallet
 
     public bool GiveGold(double amount)
     {
-        if (gold - amount < 0)
-        {
-            return false;
-        }
-        else
-        {
-           gold -= amount;
-        }
-        return false;
-    }
-
-    public bool DropGold(double amount)
-    {
-        if (gold - amount < 0)
-        {   
-            return false;
-        }
-        else
+        if (gold >= Math.Abs(amount))
         {
             gold -= amount;
             return true;
         }
+        return false;
     }
+    
 
 
 }

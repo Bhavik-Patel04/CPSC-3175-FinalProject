@@ -1,18 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Runtime.InteropServices;
-using System.Data;
-using System.Linq;
 
 namespace StarterGame
 {
-    /*
-     * Spring 2026
-     * The is your *actor* in the Command Design
-     * pattern. The instance of this class should
-     * execute all the commands.
-     */
+
     public abstract class Player
     {
 
@@ -26,6 +18,7 @@ namespace StarterGame
         public HealthSystem     health;
         public DialogHandler    dialogHandler;
         public Messenger        messenger;
+
 
 
         public Dictionary<string, Speak> SpeakCommands { get; init; } = new Dictionary<string, Speak>();    
@@ -43,7 +36,7 @@ namespace StarterGame
             this.health             = H_;
             this._currentRoom       = room;
             this.name               = name;
-            this.messenger          = new Messenger(name);
+            this.messenger          = new Messenger(this);
             this.dialogHandler      = new DialogHandler(this);
            
         }
@@ -55,18 +48,14 @@ namespace StarterGame
         // internal updater 
         public void update()
         {
-            // things that need to update in the background go here 
-            // ai can go here 
-
-            // if active player - is in a room - NPCs wont move
-            // only move if not in room on update
-
-            // think aboiut bleed effects, money loss spwll, etc
             health.update();
             wallet.update();
+            AI();
         }
 
-
+        // Overwritten by Player/Character types - see character abstracts
+        public virtual void AI() { } 
+            
 
         // add speak command user interface linkers 
         public void AddSpeakCommand(List<Speak> cmd)
@@ -76,7 +65,7 @@ namespace StarterGame
                 SpeakCommands.Add(speak.keyword, speak);
             }
         }
-
+        // Internal player systems hooking 
         public void AddInventoryCommand(List<ICs> cmd)
         {
             foreach (ICs inv_cmd in cmd)
@@ -88,7 +77,7 @@ namespace StarterGame
 
 
 
-        // looks internally in the list of availible speak commands and passes it to sub systems
+        // looks internally in the list of availible speak commands and passes it to subsystems
         public Speak? LookUpSpeakCommand(string key)
         {
             if (SpeakCommands.ContainsKey(key))
@@ -126,10 +115,6 @@ namespace StarterGame
                 room.PlayerHasEnteredRoom(this); // enter next 
                 this._currentRoom = room;        // set the ref 
             }
-            else
-            {
-                Console.WriteLine($"spawn broken yo {this.name}");
-            }
         }
 
 
@@ -148,7 +133,7 @@ namespace StarterGame
             }
             else
             {
-                messenger.ErrorMessage("\nThere is no path " + direction);
+                messenger.ErrorMessage("\nThere is no path " + direction, ConsoleColor.Red);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace StarterGame
 
         public InventoryCommand() : base()
         {
-            this.Name = "inventory"; // this is a toggle for commands
+            this.Name = "inventory"; 
         }
 
         override
@@ -25,14 +25,14 @@ namespace StarterGame
                     }
                     else
                     {
-                        player.messenger.ReplyMessage("\nCant do that... ");
+                        player.messenger.WarningMessage("\nCant do that... ", ConsoleColor.Yellow);
                     }
                 
                 return false;
             }
             else
             {
-                player.messenger.ReplyMessage("\nWhat was I doing?...");
+                player.messenger.WarningMessage("\nWhat was I doing?...", ConsoleColor.Yellow);
             }
             return false;
         }

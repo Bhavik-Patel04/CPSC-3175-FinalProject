@@ -18,8 +18,8 @@ public class SpeakTo : Speak
 	{
 		//  p1 = player 
 		//  p2 = NPC
-		p1.messenger.WarningMessage($"Speaking with : [ {p2.name} : {p2.GetType()} ] ");
-		// needs to hook into p2's handler - maybt his agros NPCS if you ask a lot lol 
-		p2.dialogHandler.GenericSpeach(this);
+		p1.messenger.WarningMessage($"Speaking with : [ {p2.name} : {p2.GetType()} ] ", ConsoleColor.Yellow);
+        // needs to hook into p2's handler - maybt his agros NPCS if you ask a lot lol 
+        p1.messenger.ReciveMessage(p2.name,p2.dialogHandler.GenericSpeach(this),ConsoleColor.Magenta);
 	}
 }

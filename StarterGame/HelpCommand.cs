@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace StarterGame
@@ -24,11 +25,11 @@ namespace StarterGame
         {
             if (this.HasSecondWord())
             {
-                player.messenger.WarningMessage("\nI cannot help you with " + this.SecondWord);
+                player.messenger.WarningMessage("\nI cannot help you with " + this.SecondWord, ConsoleColor.Yellow);
             }
             else
             {
-                player.messenger.InfoMessage("\nYou are lost. You are alone. You wander around the university, \n\nYour available commands are " + _words.Description());
+                player.messenger.InfoMessage("\nYou are lost... You are alone... You seak penenace with the Gods.. " + _words.Description(), ConsoleColor.Blue);
             }
             return false;
         }

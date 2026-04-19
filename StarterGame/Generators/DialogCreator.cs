@@ -9,6 +9,19 @@ public class DialogCreator
     {
         ["hero"] = new Dictionary<string, List<string>>()
         {
+            ["generic"] = new List<string>()
+            {
+                "... ... .... ...",
+                "...",
+                "... .. .. . ? ",
+            },
+
+            ["Thank you"] = new List<string>()
+            {
+                "Thank you..",
+                "Thanks.."
+            },
+
 
         },
 
@@ -84,7 +97,30 @@ public class DialogCreator
                 "I won’t forget you charity",
                 "May the stone shelter you and weather you from the storm of the gods"
             },
-            
+
+            ["badcharity_hostile"] = new List<string>()
+            {
+                "What is this... Just leave me to die here...",
+                "I'm blind, not stupid...",
+                "Piss off...",
+                "May the gods curse your path...",
+                "The gods are watching you...",
+                "May the flees fester on your soul..",
+                "May the maggots rot your teeth...",
+                "Gods... elves.. rich.. poor... all greedy...",
+                "May thy blade meet your flesh..."
+            },
+
+            ["badcharity_neutral"] = new List<string>()
+            {
+                "Hmmm.. go on then..",
+                "I see...",
+                "* cries * softly to themselves...",
+                "Why...?",
+                "... what did i do wrong?...",
+                "Maybe in another life..."
+            },
+
         },
 
         ["neutral"] = new Dictionary<string, List<string>>()
@@ -143,6 +179,7 @@ public class DialogCreator
         if (character_type == "beggar")
         {
             tmp.Add(new SpeakTo(dialog["beggar"]));
+            tmp.Add(new SpeakCharity(dialog["beggar"]));
             return tmp;
         }
 

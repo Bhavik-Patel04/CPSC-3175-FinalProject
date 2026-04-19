@@ -25,11 +25,11 @@ public class MapGenerator
 
     private Dictionary<int, Dictionary<int,Room>> rooms_cache;                  // all rooms 
 
-
+    private readonly ItemCreator Item_Creator;
 
     private Random rand = new Random();
     private string[] directions = { "north", "south", "east", "west" };
-    CharacterCreator Creator;
+    CharacterCreator Character_Creator;
     private int LEVELS = 10;
   
 
@@ -37,9 +37,10 @@ public class MapGenerator
 
 
 
-    public MapGenerator(CharacterCreator Creator) { 
+    public MapGenerator(CharacterCreator Character_Creator,ItemCreator Item_Creator) { 
     
-        this.Creator = Creator;
+        this.Character_Creator      = Character_Creator;
+        this.Item_Creator           = Item_Creator;
 
     }
 
@@ -55,7 +56,7 @@ public class MapGenerator
         {
             
             // roll for type 
-            int roll = rand.Next(0, 3);
+            int roll = rand.Next(0, 4);
             string type = "person";             // travelers
             switch (roll)
             {
@@ -69,7 +70,7 @@ public class MapGenerator
             }
 
             Room? spawn_location    = GetNPCspawnLocations(type); // will spawn anywhere on the map that isnt a boss room 
-            Player NPC              = Creator.createRandomPerson(null, type);
+            Player NPC              = Character_Creator.createRandomPerson(null, type);
             NPC.SpawnWarp(spawn_location);
         }
     }

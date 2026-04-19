@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace StarterGame
@@ -20,7 +21,7 @@ namespace StarterGame
             bool answer = true;
             if (this.HasSecondWord())
             {
-                player.messenger.WarningMessage("\nI cannot quit " + this.SecondWord);
+                player.messenger.ErrorMessage("\nI cannot quit " + this.SecondWord, ConsoleColor.Red);
                 answer = false;
             }
             return answer;

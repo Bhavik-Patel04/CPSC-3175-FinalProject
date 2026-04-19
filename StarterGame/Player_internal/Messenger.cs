@@ -1,11 +1,36 @@
-﻿using System;
+﻿using StarterGame;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 public class Messenger
 {
-    private string name;
+    private readonly Player p;
 
-    public Messenger(string name) {
-        this.name = name;
+    public Messenger(Player p) {
+        this.p = p;
+    }
+
+
+
+    //List<string> out_ = new List<string>();  // idea   
+    private Dictionary<string, ConsoleColor> out_ = new Dictionary<string, ConsoleColor>();
+    public Dictionary<string, ConsoleColor> Get()
+    {
+        return out_;
+    }
+
+    public void Clear()
+    {
+        out_.Clear();
+    }
+
+    public void draw()
+    {
+        foreach (var (k, v) in out_)
+        {
+            ColoredMessage(k, v);
+        }
     }
 
     public void OutputMessage(string message)
@@ -21,28 +46,80 @@ public class Messenger
         Console.ForegroundColor = oldColor;
     }
 
-    public void NormalMessage(string message)
+
+
+    public void ErrorMessage(string message, ConsoleColor select)
     {
-        ColoredMessage(message, ConsoleColor.White);
+        out_.TryAdd("[Error] : " + message, select);
     }
 
-    public void InfoMessage(string message)
+    public void WarningMessage(string message, ConsoleColor select)
     {
-        ColoredMessage(message, ConsoleColor.Blue);
+        out_.TryAdd("[Warning] : " + message, select);
     }
 
-    public void WarningMessage(string message)
+    public void InfoMessage(string message, ConsoleColor select)
     {
-        ColoredMessage(message, ConsoleColor.DarkYellow);
+        out_.TryAdd("[Info] : " + message, select);
     }
 
-    public void ErrorMessage(string message)
+    public void NormalMessage(string message, ConsoleColor select)
     {
-        ColoredMessage(message, ConsoleColor.Red);
+        out_.TryAdd(message, select);
     }
 
-    public void ReplyMessage(string message)
+    public void SendMessage(string message, ConsoleColor select)
     {
-        ColoredMessage($"[{name}] : "+message, ConsoleColor.Magenta);
+
+        out_.TryAdd($"[{p.name}] : " + message, select);
+
+    }
+
+    public void ReciveMessage(string name_,string message, ConsoleColor select)
+    {
+        out_.TryAdd($"[{name_}] : " +message, select);
+    }
+
+    private bool Near_menu(ConsoleColor select)
+    {
+        string nearby = p.CurrentRoom.GetNearByPlayers(p.name);
+        if (nearby != "")
+        {
+            string _    = "\n - - - - - - - - - - - - - - - - - - - - - - - - - -   " +
+                         $"\n{nearby}" +
+                          "\n - - - - - - - - - - - - - - - - - - - - - - - - - -   ";
+            out_.TryAdd(_, select);
+            return true;
+        }
+        return false;
+    }
+
+    private void PlayerStats(ConsoleColor select, bool top = true, bool bottom = true)
+    {
+        string line = "\n - - - - - - - - - - - - - - - - - - - - - - - - - -   ";
+        string _ = "";
+        if (top){
+            _ = line;
+        }
+        _ += $"\n{p.main_inventory.getInfo()}" +
+            $"\nHP:{p.health.GetHealthStatus()} | Gold:{p.wallet.GetGoldInWallet()}";
+        if (bottom)
+        {
+            _ += line;
+        }
+        out_.TryAdd(_, select);
+    }
+
+    public void display_menu(ConsoleColor near, ConsoleColor stats)
+    {
+        bool NM_check = p.messenger.Near_menu(near);
+        if (NM_check)
+        {
+            p.messenger.PlayerStats(stats, false);
+        }
+        else
+        {
+            p.messenger.PlayerStats(stats);
+        }
     }
 }

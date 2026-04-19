@@ -11,12 +11,12 @@ public class InventoryUnequip : ICs
             bool check = p1.main_inventory.Unequip(key);
             if (!check)
             {
-                p1.messenger.ErrorMessage("Not Equipped... ");
+                p1.messenger.ErrorMessage("Not Equipped... ", ConsoleColor.Red);
             }
         }
         else
         {
-            p1.messenger.ReplyMessage("What should I unequip..");
+            p1.messenger.ErrorMessage("What should I unequip..",ConsoleColor.Red);
         }
     }
 }

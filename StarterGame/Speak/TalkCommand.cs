@@ -21,7 +21,7 @@ namespace StarterGame
             
             int count_ = player.CurrentRoom.GetOccupancyCount(); // defently a hack lol
             if (count_ < 2){
-                player.messenger.InfoMessage("Talking to yourself is a sure sign of madness, these caverns are listening...");
+                player.messenger.InfoMessage("Talking to yourself is a sure sign of madness, these caverns are listening...", ConsoleColor.Yellow);
             }
 
             
@@ -42,7 +42,7 @@ namespace StarterGame
                         }
                         else
                         {
-                            player.messenger.WarningMessage("\nI shouldnt bother asking them.. ");
+                            player.messenger.WarningMessage("\nI shouldnt bother asking them.. ", ConsoleColor.Yellow);
                         }
                     }
                 }
@@ -50,7 +50,7 @@ namespace StarterGame
             }
             else
             {
-                player.messenger.WarningMessage("\nSpeek to whom? Youself perhaps? ");
+                player.messenger.WarningMessage("\nSpeek to whom? Youself perhaps? ", ConsoleColor.Yellow);
             }
             return false;
         }

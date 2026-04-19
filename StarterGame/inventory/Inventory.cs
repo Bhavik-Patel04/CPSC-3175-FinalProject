@@ -8,27 +8,46 @@ using System.Security.Cryptography.X509Certificates;
 public class Inventory : IInventory
 {
 
-    private Dictionary<string, Item> pocket = new Dictionary<string, Item>();   
+    private Dictionary<string, Item> backpack = new Dictionary<string, Item>();   
     private Dictionary<string, Item> equipment = new Dictionary<string, Item>();
     private Dictionary<string, Item> armor = new Dictionary<string, Item>();
 
-    private int Capacity                = 100;      // capacity cap
+    private int Capacity                = 20;      // capacity cap
     private int Capacity_onboard        = 0;
 
 
-    private double Weight_onboard       = 0.00;
-    private double Weight_cap           = 75.00;    // pocket weight limit
+    private double backpack_lbs         = 0.00;
+    private double backpack_cap         = 75.00;    // backpack weight limit
 
  
-    private double Equipment_onboard    = 0;
-    private int Equipment_cap           = 25;       // 100 pound carry limit
+    private double equipment_lbs        = 0;
+    private double equipment_cap        = 25;       // 100 pound carry limit
 
-    private double Armor_onboard        = 0;
-    private int Armor_cap               = 25;        
+    private double armor_lbs            = 0;
+    private double armor_cap            = 25;        
 
-    // ABSOLUTE LIMITS
-    private double MAX_WEIGHT           = 150;
-   private double MAX_EQIPMENT_WEIGHT   = 50;
+    
+    private double MAX_backpack_lbs     = 150;
+    private double MAX_equipment_lbs    = 75;
+    private double MAX_armor_lbs        = 75;
+
+    
+
+
+    // ABSOLUTE LIMITS - boosters cap 
+    private const double LIMIT_backpack     = 300;
+    private const double LIMIT_armor        = 70;
+    private const double LIMIT_equipment    = 70;
+
+
+    public Inventory(double backpack_cap = 75 ,double equipment_cap = 25,double armor_cap = 25)
+    {
+        this.backpack_cap   = backpack_cap;
+        this.equipment_cap  = equipment_cap;
+        this.armor_cap      = armor_cap;
+    }
+
+
 
 
     //-------------------------------------------------------------------------------------------------------
@@ -38,20 +57,30 @@ public class Inventory : IInventory
 
     private bool RaiseInventoryWeightCap(int ammount)
     {
-        if (Weight_cap + ammount <= MAX_WEIGHT)
+        if (backpack_cap + ammount <= LIMIT_backpack)
         {
-            Weight_cap += ammount;
+            backpack_cap += ammount;
+            return true;
+        }
+        return false;
+    }
+
+    private bool RaiseEquipmentWeightCap(int ammount)
+    {
+        if (equipment_cap + ammount <= LIMIT_equipment)
+        {
+            equipment_cap += ammount;
             return true;
         }
         return false;
 
     }
 
-    private bool RaiseEquipmentWeightCap(int ammount)
+    private bool RaiseArmorWeightCap(int ammount)
     {
-        if (Equipment_cap + ammount <= MAX_EQIPMENT_WEIGHT)
+        if (armor_cap + ammount <= LIMIT_armor)
         {
-            Equipment_cap += ammount;
+            armor_cap += ammount;
             return true;
         }
         return false;
@@ -63,38 +92,64 @@ public class Inventory : IInventory
     // Equipment attachment
     //-------------------------------------------------------------------------------------------------------
 
+    Dictionary<string, bool> sections = new Dictionary<string, bool>
+    {
+        ["head"]    = false,
+        ["body"]    = false,
+    };
+
 
     public bool Equip(string id)
     {
-        if (pocket.ContainsKey(id))
+
+
+        if (backpack.ContainsKey(id))
         {
-            if (pocket[id] is Weapon )
+            if (backpack[id] is Weapon )
             {
-                if (!equipment.ContainsKey(pocket[id].id))
+                if (!equipment.ContainsKey(backpack[id].id))
                 { 
-                    if (Equipment_onboard + pocket[id].mass <= Equipment_cap)
+                    if (equipment_lbs + backpack[id].mass <= equipment_cap)
                     {
-                        Equipment_onboard += pocket[id].mass;
-                        equipment.Add(id, pocket[id]);
+                        equipment_lbs += backpack[id].mass;
+                        equipment.Add(id, backpack[id]);
                         DelItem(id, 1);
                         return true;
                     }
                 }
             }
 
-            if (pocket[id] is Armor)
+            if (backpack[id] is Helmet && sections["head"] == false)
             {
-                if (!armor.ContainsKey(pocket[id].id))
+                if (!armor.ContainsKey(backpack[id].id))
                 {
-                    if (Armor_onboard + pocket[id].mass <= Armor_cap)
+                    if (armor_lbs + backpack[id].mass <= armor_cap)
                     {
-                        Armor_onboard += pocket[id].mass;
-                        armor.Add(id, pocket[id]);
+                        armor_lbs += backpack[id].mass;
+                        armor.Add(id, backpack[id]);
                         DelItem(id, 1);
+                        sections["head"] = true;
                         return true;
                     }
                 }
             }
+
+            if (backpack[id] is ChestPlate && sections["body"] == false)
+            {
+                if (!armor.ContainsKey(backpack[id].id))
+                {
+                    if (armor_lbs + backpack[id].mass <= armor_cap)
+                    {
+                        armor_lbs += backpack[id].mass;
+                        armor.Add(id, backpack[id]);
+                        DelItem(id, 1);
+                        sections["head"] = true;
+                        return true;
+                    }
+                }
+            }
+
+
 
         }
         return false;
@@ -105,7 +160,7 @@ public class Inventory : IInventory
     {
         if (equipment.ContainsKey(id))
         {
-            Equipment_onboard -= equipment[id].mass;
+            equipment_lbs -= equipment[id].mass;
             Item tmp = equipment[id];
             equipment.Remove(id);
             AddItem(tmp);
@@ -114,7 +169,18 @@ public class Inventory : IInventory
         }
         if (armor.ContainsKey(id))
         {
-            Armor_onboard -= armor[id].mass;
+
+            
+            if (armor[id] is Helmet && sections["head"] == true)
+            {
+                sections["head"] = false;
+            }
+            if (armor[id] is ChestPlate && sections["body"] == true)
+            {
+                sections["body"] = false;
+            }
+
+            armor_lbs -= armor[id].mass;
             Item tmp = armor[id];
             armor.Remove(id);
             AddItem(tmp);
@@ -129,12 +195,15 @@ public class Inventory : IInventory
     // Sell, trade, use items 
     //-------------------------------------------------------------------------------------------------------
 
-
+    public double getTotalWeight()
+    {
+        return backpack_lbs + equipment_lbs + armor_lbs;
+    }
 
     public List<Item> getAllItemsMarkedForSale()
     {
         List<Item> __ = new List<Item>();
-        foreach (var (k, v) in pocket)
+        foreach (var (k, v) in backpack)
         {
             if (v.forSale == true)
             {
@@ -144,29 +213,70 @@ public class Inventory : IInventory
        return __;
     }
 
-
-
-    public Item? getItem(string id)
+    public bool MarkForSale(string id)
     {
-        if (pocket.ContainsKey(id))
+        if (backpack.ContainsKey(id))
         {
-            return pocket[id];
+            backpack[id].forSale = true;
+            return true;
         }
-        return null;
+        return false;
+    }
+
+    public void FindAndMarkItemsToSell(int amt)
+    {
+        int count = 0;
+        foreach ( var (k,v) in backpack) 
+        {
+            if (count < amt)
+            {
+                if (v.forSale == false)
+                {
+                    count++;
+                    v.forSale = true;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 
 
 
-    public void useItem( string id , int ammount)
+
+    public Item? getItem(string id)
     {
+        if (backpack.ContainsKey(id))
+        {
+            return backpack[id];
+        }
+        return null;
+    }
+
+    public string getItemInfo(string id)
+    {
+        if (backpack.ContainsKey(id))
+        {
+            return $"Number of [ {id} : {backpack[id].numberOf} ] availible...";
+        }
+        return null;
+    }
+
+    public bool useItem( string id , int ammount)
+    {
+        if (ammount == 0) return false;
         Item item = getItem(id);
         if (item != null)
         {
            if (item is Potion)
             {
-
+                Console.WriteLine("ommm nom nom nom");////////////////////////////////////////////////////////////////////////////////////////
+                return true;
             }
         }
+        return false;
     }
 
 
@@ -177,40 +287,27 @@ public class Inventory : IInventory
 
     public bool AddItem(Item item)
     {
-        // exists in dictionary
-        if (pocket.ContainsKey(item.id))
+        double item_mass = (item.numberOf * item.mass);
+
+        if ((item_mass + getTotalWeight()) <= backpack_cap)
         {
-            double item_mass = (item.numberOf * item.mass);
-            // check if adding it makes us over weight...
-
-            if ((item_mass + Weight_onboard) <= Weight_cap)
-            {
-                if (Capacity_onboard + item.numberOf <= Capacity)
-                {
-                    Capacity_onboard += item.numberOf;  // capacity
-                    Weight_onboard += item_mass;     // add up mass
-                    pocket[item.id].numberOf += item.numberOf; // add
-
-                    return true;
-                }
-            }
-
-        }
-        // doesnt exist in dictionary
-        else
-        {
-            double item_mass = (item.numberOf * item.mass);
             if (Capacity_onboard + item.numberOf <= Capacity)
             {
-                if ((item_mass + Weight_onboard) <= Weight_cap)
+                if (backpack.ContainsKey(item.id))
                 {
-                    Weight_onboard += item_mass;     // add up mass
-                    pocket.Add(item.id, item);
+                    Capacity_onboard            += item.numberOf;    // capacity
+                    backpack_lbs                += item_mass;        // add up mass
+                    backpack[item.id].numberOf  += item.numberOf;    // add
+                    return true;
+                }
+                else
+                {
+                    backpack_lbs += item_mass;      // add up mass
+                    backpack.Add(item.id, item);
                     return true;
                 }
             }
         }
-
         return false;
     }
 
@@ -218,25 +315,25 @@ public class Inventory : IInventory
 
     public int DelItem(string id, int ammount)
     {
-        if (!pocket.ContainsKey(id))
+        if (!backpack.ContainsKey(id))
         {
             return 0;
         }
-        if (ammount < pocket[id].numberOf) // clamp
+        if (ammount < backpack[id].numberOf) // clamp
         {
             Capacity_onboard            -= ammount;
-            Weight_onboard              -= (ammount * pocket[id].mass);
-            pocket[id].numberOf         -= ammount;
+            backpack_lbs              -= (ammount * backpack[id].mass);
+            backpack[id].numberOf         -= ammount;
             return ammount;
         }
         else
         {
             // create persitant tracking
             int temp_actualAmmount      = 0;
-            temp_actualAmmount          = pocket[id].numberOf;
-            Capacity_onboard           -= pocket[id].numberOf;
-            Weight_onboard             -= (pocket[id].numberOf) * pocket[id].mass;
-            pocket.Remove(id);
+            temp_actualAmmount          = backpack[id].numberOf;
+            Capacity_onboard           -= backpack[id].numberOf;
+            backpack_lbs               -= (backpack[id].numberOf) * backpack[id].mass;
+            backpack.Remove(id);
             return temp_actualAmmount;
 
         }
@@ -245,37 +342,44 @@ public class Inventory : IInventory
 
     public string getInfo()
     {
-        return $"Inventory weight : [{Weight_onboard}]lbs ||  Equipment : [{Equipment_onboard}]lbs || Armor : [{Armor_onboard}]lbs";
+        return $"Inventory total : [{getTotalWeight():F2}]lbs ||  Equipment : [{equipment_lbs:F2}]lbs || Armor : [{armor_lbs:F2}]lbs";
     }
 
     public string ReadInventory()
     {
-        if (pocket.Count != 0)
+        if (backpack.Count != 0)
         {
-            string tmp = "";
+            string tmp = "\n";
             if (armor.Count > 0)
             {
                 tmp += "[ Armor ]---------------------------------------------------------------------\n";
-                foreach (var item in armor.Values)
+                foreach (Armor item in armor.Values)
                 {
-                    tmp += $"{item.id} >>> #: {item.numberOf} [Mass: {item.mass * item.numberOf}]\n";
+                    //Console.WriteLine($"{i - 3} : {forsale[i].id,-35}  >>  {forsale[i].mass,8:F2} | {forsale[i].price,10:F2}", ConsoleColor.White);
+                    tmp +=
+                            $"{item.id,-45} >>>   #: {item.numberOf,3}  | Weight: {(item.mass * item.numberOf),8:F2} lbs\n" +
+                            $"{"",-45}PHY: {item.physical_protection,5} | FIR: {item.fire_protection,5} | MGK: {item.magic_protection,5}\n";
                 }
             }
             if (equipment.Count > 0)
             {
                 tmp += "[ Equioment ]------------------------------------------------------------------\n";
-                foreach (var item in equipment.Values)
+                foreach (Weapon item in equipment.Values)
                 {
-                    tmp += $"{item.id} >>> #: {item.numberOf} [Mass: {item.mass * item.numberOf}]\n";
+
+                    tmp +=
+                        $"{item.id,-45} >>>   #: {item.numberOf,3}  | Weight: {(item.mass * item.numberOf),8:F2} lbs\n" +
+                        $"{"",-45}PHY: {item.physical_damage,5} | FIR: {item.fire_damage,5} | MGK: {item.magic_damage,5}\n";
+
                 }
             }
-            if (pocket.Count > 0)
+            if (backpack.Count > 0)
             {
                 tmp += "[ Inventory ]------------------------------------------------------------------\n";
 
-                foreach (var item in pocket.Values)
+                foreach (var item in backpack.Values)
                 {
-                    tmp += $"{item.id} >>> #: {item.numberOf} [Mass: {item.mass * item.numberOf}]\n";
+                    tmp += $"{item.id,-45} >>> #: {item.numberOf,3} [Weight: {(item.mass * item.numberOf),8:F2}] lbs\n";
                 }
             }
             return tmp;

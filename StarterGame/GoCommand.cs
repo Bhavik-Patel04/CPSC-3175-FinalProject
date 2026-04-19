@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace StarterGame
@@ -23,7 +24,7 @@ namespace StarterGame
             }
             else
             {
-                player.messenger.WarningMessage("\nGo Where?");
+                player.messenger.ErrorMessage("\nGo Where?", ConsoleColor.Red);
             }
             return false;
         }

@@ -10,12 +10,12 @@ public class InventoryEquip : ICs
         {
             bool check = p1.main_inventory.Equip(key);
             if (!check) {
-                p1.messenger.ErrorMessage("Not equipable...");
+                p1.messenger.ErrorMessage("Not equipable...", ConsoleColor.Red);
             }
         }
         else
         {
-            p1.messenger.ReplyMessage("What should I equip..");
+            p1.messenger.ErrorMessage("What should I equip..", ConsoleColor.Red);
         }
     }
 }

@@ -54,8 +54,11 @@ public class CharacterCreator
     private Dictionary<string, Player> players      = new Dictionary<string, Player>();
     private Random rand                             = new Random();
     private DialogCreator dialogCreator             = new DialogCreator();
-
-
+    private readonly ItemCreator itemCreator;
+    public CharacterCreator(ItemCreator itemCreator)
+    {
+        this.itemCreator = itemCreator;
+    }
 
 
 
@@ -64,9 +67,9 @@ public class CharacterCreator
     // on each revolution of the parser, this updates all players/NPCs in the game 
     public void update()
     {
-        foreach (var kv in players)
+        foreach (var (k,v) in players)
         {
-            kv.Value.update();
+            v.update();
         }
     }
 
@@ -121,31 +124,30 @@ public class CharacterCreator
         // DI inject health system,and other systems here 
 
         Inventory main_inventory        = new Inventory();
-        Wallet wallet                   = new Wallet(0, 1000);
+        Wallet wallet                   = new Wallet(50, 1000);
         HealthSystem health             = new HealthSystem();
         
 
 
-        // speak commands go here 
 
-
-        // do commands go here 
-
+        // bind user only commands
         List<Speak>  dialogCommands = dialogCreator.MakeDialogSet(type);
+        List<ICs> inventoryCommands = new List<ICs>();    // hook into commands for inventory - would need to be on all players if we can body swap ??  this gies you fron end acess to that characts inventory
 
-
-        List<ICs> inventoryCommands = new List<ICs>();    // hook into commands for inventory ( external AI and User interface hooking )
         inventoryCommands.Add(new InventoryOpen());
-        inventoryCommands.Add(new InventoryEquip());
-        inventoryCommands.Add(new InventoryUnequip());
-
+        inventoryCommands.Add(new InventoryEquip());      // really only needs to load for user 
+        inventoryCommands.Add(new InventoryUnequip());    // AI should really just have acess withouth the command interfece 
+        inventoryCommands.Add(new InventoryUse());
 
 
         Player character;
         switch (type)
         {
-            case "merchant":
-                character = new Merchant(
+            // only one of these per fame ( is the user )
+            // this allows for some advanced character to character interactiosn
+            case "hero":
+
+                character = new Hero(
                                                         name,               // Character name 
                                                         dialogCommands,     // custom dialog prompt hooking 
                                                         main_inventory,     // internal system 
@@ -155,6 +157,23 @@ public class CharacterCreator
 
                                                         null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
                                                      );
+                Loot(character);
+                break;
+                
+
+            case "merchant":
+
+               character = new Merchant(
+                                                        name,               // Character name 
+                                                        dialogCommands,     // custom dialog prompt hooking 
+                                                        main_inventory,     // internal system 
+                                                        inventoryCommands,  // inventory command hooking ( user interface and AI hooking )
+                                                        wallet,             // internal system 
+                                                        health,             // internal system
+
+                                                        null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
+                                                     );
+                Loot(character);
                 break;
             case "beggar":
                 character = new Beggar(
@@ -191,6 +210,7 @@ public class CharacterCreator
 
                                                         null                // current room / spawn room ( null at first - assigned by SpawnWarp() ) 
                                                      );
+                Loot(character);
                 break;
             default:
                 character = new Person(
@@ -212,5 +232,31 @@ public class CharacterCreator
         return character;
     }
 
+    private void Loot(Player p)
+    {
+        int numberOf_roll   = rand.Next(0, 5);
+        int type_roll       = 0;
+        Item _;
+        for (int i = 0; i < numberOf_roll; i++)
+        {
+
+            type_roll = rand.Next(0, 3);
+            switch (type_roll)
+            {
+                case 0:
+                    _ = itemCreator.Generate("sword");
+                    p.main_inventory.AddItem(_);
+                    break;
+                case 1:
+                    _ = itemCreator.Generate("helmet");
+                    p.main_inventory.AddItem(_);
+                    break;
+                case 2:
+                    _ = itemCreator.Generate("chestplate");
+                    p.main_inventory.AddItem(_);
+                    break;
+            }
+        }
+    }
 
 }

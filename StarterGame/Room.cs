@@ -139,13 +139,13 @@ namespace StarterGame
             string list_ = "";
             if (occupancylist.Count > 1)
             {
-                list_ += "Near by:\n";
+                list_ += "[Near Me]:\n";
             }
             foreach (List<string> index in occupancylist)
             {
                 if (index[0] != name)
                 {
-                    list_ += $"\n{index[0]} : {index[1]}";
+                    list_ += $"\n{index[0],-20} : {index[1]}";
                 }
             }
             return list_;
